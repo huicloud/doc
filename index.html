@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+</head>
+<body>
+<nav id="TOC">
+<ul>
+<li><a href="#请求格式">请求格式</a></li>
+<li><a href="#服务列表">服务列表</a><ul>
+<li><a href="#行情服务">行情服务</a><ul>
+<li><a href="#动态行情">动态行情</a></li>
+<li><a href="#k线服务">k线服务</a></li>
+<li><a href="#分笔行情">分笔行情</a></li>
+</ul></li>
+<li><a href="#消息服务">消息服务</a><ul>
+<li><a href="#消息发送">消息发送</a></li>
+<li><a href="#消息订阅">消息订阅</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h2 id="请求格式">请求格式</h2>
+<p><strong>URL简介</strong></p>
+<h1 id="服务列表">服务列表</h1>
+<h2 id="行情服务">行情服务</h2>
+<h3 id="动态行情">动态行情</h3>
+<p><strong>URL</strong></p>
+<p>qoute/dyna</p>
+<p><strong>描述</strong></p>
+<p>动态行情服务</p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">说明</th>
+<th style="text-align: left;">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">obj*</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">field</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">字段过滤(见返回说明)</td>
+<td style="text-align: left;">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">
+<span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataQuoteDynaSingle&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;Obj&quot;</span><span class="fu">:</span> <span class="st">&quot;SH601519&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Data&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+                <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">638231067</span><span class="fu">,</span><span class="er">//说明</span>
+                <span class="dt">&quot;ShiJian&quot;</span><span class="fu">:</span> <span class="dv">369065887036</span><span class="fu">,</span><span class="er">//时间</span>
+                <span class="dt">&quot;ZuiXinJia&quot;</span><span class="fu">:</span> <span class="dv">970</span><span class="fu">,</span><span class="er">//最新价</span>
+                <span class="dt">&quot;KaiPanJia&quot;</span><span class="fu">:</span> <span class="dv">890</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiGaoJia&quot;</span><span class="fu">:</span> <span class="dv">972</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiDiJia&quot;</span><span class="fu">:</span> <span class="dv">868</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuoShou&quot;</span><span class="fu">:</span> <span class="dv">894</span><span class="fu">,</span>
+                <span class="dt">&quot;JunJia&quot;</span><span class="fu">:</span> <span class="dv">909</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangDie&quot;</span><span class="fu">:</span> <span class="dv">76</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangFu&quot;</span><span class="fu">:</span> <span class="dv">850</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhenFu&quot;</span><span class="fu">:</span> <span class="dv">1163</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoLiang&quot;</span><span class="fu">:</span> <span class="dv">10520025720</span><span class="fu">,</span>
+                <span class="dt">&quot;XianShou&quot;</span><span class="fu">:</span> <span class="dv">704460</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoE&quot;</span><span class="fu">:</span> <span class="dv">9579555514880</span><span class="fu">,</span>
+                <span class="dt">&quot;ZongChengJiaoBiShu&quot;</span><span class="fu">:</span> <span class="dv">680146</span><span class="fu">,</span>
+                <span class="dt">&quot;NeiPan&quot;</span><span class="fu">:</span> <span class="dv">4850371956</span><span class="fu">,</span>
+                <span class="dt">&quot;WaiPan&quot;</span><span class="fu">:</span> <span class="dv">5671357700</span>
+            <span class="fu">}</span>
+        <span class="fu">}</span>
+    <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>示例</strong></p>
+<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<h3 id="k线服务">k线服务</h3>
+<p><strong>URL</strong></p>
+<p>qoute/dyna</p>
+<p><strong>描述</strong></p>
+<p>动态行情服务</p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">说明</th>
+<th style="text-align: left;">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">obj*</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">field</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">字段过滤(见返回说明)</td>
+<td style="text-align: left;">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">
+<span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataQuoteDynaSingle&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;Obj&quot;</span><span class="fu">:</span> <span class="st">&quot;SH601519&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Data&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+                <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">638231067</span><span class="fu">,</span><span class="er">//说明</span>
+                <span class="dt">&quot;ShiJian&quot;</span><span class="fu">:</span> <span class="dv">369065887036</span><span class="fu">,</span><span class="er">//时间</span>
+                <span class="dt">&quot;ZuiXinJia&quot;</span><span class="fu">:</span> <span class="dv">970</span><span class="fu">,</span><span class="er">//最新价</span>
+                <span class="dt">&quot;KaiPanJia&quot;</span><span class="fu">:</span> <span class="dv">890</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiGaoJia&quot;</span><span class="fu">:</span> <span class="dv">972</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiDiJia&quot;</span><span class="fu">:</span> <span class="dv">868</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuoShou&quot;</span><span class="fu">:</span> <span class="dv">894</span><span class="fu">,</span>
+                <span class="dt">&quot;JunJia&quot;</span><span class="fu">:</span> <span class="dv">909</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangDie&quot;</span><span class="fu">:</span> <span class="dv">76</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangFu&quot;</span><span class="fu">:</span> <span class="dv">850</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhenFu&quot;</span><span class="fu">:</span> <span class="dv">1163</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoLiang&quot;</span><span class="fu">:</span> <span class="dv">10520025720</span><span class="fu">,</span>
+                <span class="dt">&quot;XianShou&quot;</span><span class="fu">:</span> <span class="dv">704460</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoE&quot;</span><span class="fu">:</span> <span class="dv">9579555514880</span><span class="fu">,</span>
+                <span class="dt">&quot;ZongChengJiaoBiShu&quot;</span><span class="fu">:</span> <span class="dv">680146</span><span class="fu">,</span>
+                <span class="dt">&quot;NeiPan&quot;</span><span class="fu">:</span> <span class="dv">4850371956</span><span class="fu">,</span>
+                <span class="dt">&quot;WaiPan&quot;</span><span class="fu">:</span> <span class="dv">5671357700</span>
+            <span class="fu">}</span>
+        <span class="fu">}</span>
+    <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>示例</strong></p>
+<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<h3 id="分笔行情">分笔行情</h3>
+<p><strong>URL</strong></p>
+<p>qoute/dyna</p>
+<p><strong>描述</strong></p>
+<p>动态行情服务</p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">说明</th>
+<th style="text-align: left;">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">obj*</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">field</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">字段过滤(见返回说明)</td>
+<td style="text-align: left;">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">
+<span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataQuoteDynaSingle&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;Obj&quot;</span><span class="fu">:</span> <span class="st">&quot;SH601519&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Data&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+                <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">638231067</span><span class="fu">,</span><span class="er">//说明</span>
+                <span class="dt">&quot;ShiJian&quot;</span><span class="fu">:</span> <span class="dv">369065887036</span><span class="fu">,</span><span class="er">//时间</span>
+                <span class="dt">&quot;ZuiXinJia&quot;</span><span class="fu">:</span> <span class="dv">970</span><span class="fu">,</span><span class="er">//最新价</span>
+                <span class="dt">&quot;KaiPanJia&quot;</span><span class="fu">:</span> <span class="dv">890</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiGaoJia&quot;</span><span class="fu">:</span> <span class="dv">972</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiDiJia&quot;</span><span class="fu">:</span> <span class="dv">868</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuoShou&quot;</span><span class="fu">:</span> <span class="dv">894</span><span class="fu">,</span>
+                <span class="dt">&quot;JunJia&quot;</span><span class="fu">:</span> <span class="dv">909</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangDie&quot;</span><span class="fu">:</span> <span class="dv">76</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangFu&quot;</span><span class="fu">:</span> <span class="dv">850</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhenFu&quot;</span><span class="fu">:</span> <span class="dv">1163</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoLiang&quot;</span><span class="fu">:</span> <span class="dv">10520025720</span><span class="fu">,</span>
+                <span class="dt">&quot;XianShou&quot;</span><span class="fu">:</span> <span class="dv">704460</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoE&quot;</span><span class="fu">:</span> <span class="dv">9579555514880</span><span class="fu">,</span>
+                <span class="dt">&quot;ZongChengJiaoBiShu&quot;</span><span class="fu">:</span> <span class="dv">680146</span><span class="fu">,</span>
+                <span class="dt">&quot;NeiPan&quot;</span><span class="fu">:</span> <span class="dv">4850371956</span><span class="fu">,</span>
+                <span class="dt">&quot;WaiPan&quot;</span><span class="fu">:</span> <span class="dv">5671357700</span>
+            <span class="fu">}</span>
+        <span class="fu">}</span>
+    <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>示例</strong></p>
+<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<h2 id="消息服务">消息服务</h2>
+<h3 id="消息发送">消息发送</h3>
+<p><strong>URL</strong></p>
+<p>qoute/dyna</p>
+<p><strong>描述</strong></p>
+<p>动态行情服务</p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">说明</th>
+<th style="text-align: left;">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">obj*</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">field</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">字段过滤(见返回说明)</td>
+<td style="text-align: left;">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">
+<span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataQuoteDynaSingle&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;Obj&quot;</span><span class="fu">:</span> <span class="st">&quot;SH601519&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Data&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+                <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">638231067</span><span class="fu">,</span><span class="er">//说明</span>
+                <span class="dt">&quot;ShiJian&quot;</span><span class="fu">:</span> <span class="dv">369065887036</span><span class="fu">,</span><span class="er">//时间</span>
+                <span class="dt">&quot;ZuiXinJia&quot;</span><span class="fu">:</span> <span class="dv">970</span><span class="fu">,</span><span class="er">//最新价</span>
+                <span class="dt">&quot;KaiPanJia&quot;</span><span class="fu">:</span> <span class="dv">890</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiGaoJia&quot;</span><span class="fu">:</span> <span class="dv">972</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiDiJia&quot;</span><span class="fu">:</span> <span class="dv">868</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuoShou&quot;</span><span class="fu">:</span> <span class="dv">894</span><span class="fu">,</span>
+                <span class="dt">&quot;JunJia&quot;</span><span class="fu">:</span> <span class="dv">909</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangDie&quot;</span><span class="fu">:</span> <span class="dv">76</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangFu&quot;</span><span class="fu">:</span> <span class="dv">850</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhenFu&quot;</span><span class="fu">:</span> <span class="dv">1163</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoLiang&quot;</span><span class="fu">:</span> <span class="dv">10520025720</span><span class="fu">,</span>
+                <span class="dt">&quot;XianShou&quot;</span><span class="fu">:</span> <span class="dv">704460</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoE&quot;</span><span class="fu">:</span> <span class="dv">9579555514880</span><span class="fu">,</span>
+                <span class="dt">&quot;ZongChengJiaoBiShu&quot;</span><span class="fu">:</span> <span class="dv">680146</span><span class="fu">,</span>
+                <span class="dt">&quot;NeiPan&quot;</span><span class="fu">:</span> <span class="dv">4850371956</span><span class="fu">,</span>
+                <span class="dt">&quot;WaiPan&quot;</span><span class="fu">:</span> <span class="dv">5671357700</span>
+            <span class="fu">}</span>
+        <span class="fu">}</span>
+    <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>示例</strong></p>
+<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<h3 id="消息订阅">消息订阅</h3>
+<p><strong>URL</strong></p>
+<p>qoute/dyna</p>
+<p><strong>描述</strong></p>
+<p>动态行情服务</p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">说明</th>
+<th style="text-align: left;">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">obj*</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">field</td>
+<td style="text-align: left;">字符串</td>
+<td style="text-align: left;">字段过滤(见返回说明)</td>
+<td style="text-align: left;">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json">
+<span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataQuoteDynaSingle&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;Obj&quot;</span><span class="fu">:</span> <span class="st">&quot;SH601519&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Data&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+                <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">638231067</span><span class="fu">,</span><span class="er">//说明</span>
+                <span class="dt">&quot;ShiJian&quot;</span><span class="fu">:</span> <span class="dv">369065887036</span><span class="fu">,</span><span class="er">//时间</span>
+                <span class="dt">&quot;ZuiXinJia&quot;</span><span class="fu">:</span> <span class="dv">970</span><span class="fu">,</span><span class="er">//最新价</span>
+                <span class="dt">&quot;KaiPanJia&quot;</span><span class="fu">:</span> <span class="dv">890</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiGaoJia&quot;</span><span class="fu">:</span> <span class="dv">972</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuiDiJia&quot;</span><span class="fu">:</span> <span class="dv">868</span><span class="fu">,</span>
+                <span class="dt">&quot;ZuoShou&quot;</span><span class="fu">:</span> <span class="dv">894</span><span class="fu">,</span>
+                <span class="dt">&quot;JunJia&quot;</span><span class="fu">:</span> <span class="dv">909</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangDie&quot;</span><span class="fu">:</span> <span class="dv">76</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhangFu&quot;</span><span class="fu">:</span> <span class="dv">850</span><span class="fu">,</span>
+                <span class="dt">&quot;ZhenFu&quot;</span><span class="fu">:</span> <span class="dv">1163</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoLiang&quot;</span><span class="fu">:</span> <span class="dv">10520025720</span><span class="fu">,</span>
+                <span class="dt">&quot;XianShou&quot;</span><span class="fu">:</span> <span class="dv">704460</span><span class="fu">,</span>
+                <span class="dt">&quot;ChengJiaoE&quot;</span><span class="fu">:</span> <span class="dv">9579555514880</span><span class="fu">,</span>
+                <span class="dt">&quot;ZongChengJiaoBiShu&quot;</span><span class="fu">:</span> <span class="dv">680146</span><span class="fu">,</span>
+                <span class="dt">&quot;NeiPan&quot;</span><span class="fu">:</span> <span class="dv">4850371956</span><span class="fu">,</span>
+                <span class="dt">&quot;WaiPan&quot;</span><span class="fu">:</span> <span class="dv">5671357700</span>
+            <span class="fu">}</span>
+        <span class="fu">}</span>
+    <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>示例</strong></p>
+<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+</body>
+</html>
