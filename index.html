@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
@@ -46,11 +43,24 @@ code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Ann
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
+  <link rel="stylesheet" href="pandoc.css" type="text/css" />
 </head>
 <body>
-<nav id="TOC">
+<div id="TOC">
 <ul>
+<li><a href="#开发指南">开发指南</a><ul>
+<li><a href="#开发说明">开发说明</a></li>
+<li><a href="#协议支持">协议支持</a><ul>
+<li><a href="#http协议">http协议</a></li>
+<li><a href="#websocket协议">websocket协议</a></li>
+</ul></li>
 <li><a href="#请求格式">请求格式</a></li>
+<li><a href="#响应格式">响应格式</a></li>
+<li><a href="#授权认证">授权认证</a><ul>
+<li><a href="#获取授权令牌">获取授权令牌</a></li>
+<li><a href="#刷新授权令牌">刷新授权令牌</a></li>
+</ul></li>
+</ul></li>
 <li><a href="#服务列表">服务列表</a><ul>
 <li><a href="#行情服务">行情服务</a><ul>
 <li><a href="#动态行情">动态行情</a></li>
@@ -63,9 +73,348 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 </ul>
-</nav>
+</div>
+<h1 id="开发指南">开发指南</h1>
+<h2 id="开发说明">开发说明</h2>
+<p>大智慧信息服务云平台（简称云平台）包括了各种类型的金融数据，包括股票行情、新闻公告、信息资讯等。</p>
+<p>同时，云平台提供了一套统一、标准且安全的数据访问API接口，以方便开发者能快速的接入云平台，极大地帮助开发者节省开发成本与周期。</p>
+<h2 id="协议支持">协议支持</h2>
+<p>云平台数据请求支持两种通讯协议: http、websocket</p>
+<p>http协议多用于单次数据查询类请求</p>
+<p>websocket是HTML5开始提供的一种浏览器与服务器间进行全双工通讯的网络技术，主要用于订阅推送类请求，也支持单次查询类</p>
+<h3 id="http协议">http协议</h3>
+<p>http请求URL表示形式，如下：</p>
+<p>http://hostname[:port]/path?query (带方括号[]的为可选项)</p>
+<p>动态行情请求举例:</p>
+<p>http://hostname:8080/quote/dyna?obj=SH600000&amp;sub=0&amp;qid=1&amp;token=xxxxx</p>
+<p>http协议支持GET,POST; GET和POST的请求内容和响应内容是完全一致的。</p>
+<p>因为HTTP对请求URI是有长度限制的，过长的URI，就可以通过使用POST方式将QUERY内容放置于BODY中来进行提交。</p>
+<h3 id="websocket协议">websocket协议</h3>
+<p>websocket请求前需要先建立websocket长连接，连接的url如下：</p>
+<p>ws://hostname:port/ws?token=xxxx (连接的port与token与http请求相同)</p>
+<p>连接建立成功后可进行数据的单次请求、订阅、订阅取消</p>
+<p>动态行情订阅推送请求举例：</p>
+<p>/quote/dyna?obj=SH600000&amp;sub=1&amp;qid=1</p>
+<p>取消上面的订阅请求</p>
+<p>/cancel?qid=1</p>
 <h2 id="请求格式">请求格式</h2>
 <p><strong>URL简介</strong></p>
+<p>统一资源定位符（Uniform Resource Locator，缩写为URL）是对可以从互联网上得到的资源的位置和访问方法的一种简洁的表示，是互联网上标准资源的地址。</p>
+<p>互联网上的每个文件都有一个唯一的URL，它包含的信息指出文件的位置以及浏览器应该怎么处理它。</p>
+<p>URL由三部分组成：资源类型、存放资源的主机域名、资源文件名。</p>
+<p>URL的一般语法格式为： protocol://hostname[:port]/path[?query]#fragment (带方括号[]的为可选项)</p>
+<p>URL详细描述参见：<a href="http://www.w3.org/Addressing/rfc1738.txt">RFC1738</a></p>
+<p><strong>请求格式</strong></p>
+<p>云平台的请求串格式，使用URL的path+query来构成，语法为：</p>
+<p>/path?query</p>
+<ul>
+<li>path - 路径，由零或多个“/”符号隔开的字符串构成，指定云平台中对外提供的服务名。</li>
+<li>query - 查询，用于传递查询参数，多个参数用“&amp;”符号隔开，每个参数的名和值用“=”符号隔开；请求字符串的编码规范，完全符合URL。</li>
+</ul>
+<p><strong>PATH部分</strong></p>
+<p>path路径，指定云平台的应用服务名，通过它能唯一找到相应的应用服务来处理请求。</p>
+<ul>
+<li>/quote/dyna: 动态行情服务</li>
+<li>/cancel: 取消订阅服务</li>
+<li>/group: 请求组服务</li>
+</ul>
+<p><strong>QUERY部分</strong></p>
+<p>通用参数，对所有请求有效</p>
+<ul>
+<li><p>output - 可选。指定数据结果的返回格式：json（缺省值），protobuff</p></li>
+<li>qid - 必填(websocket协议)。请求ID，指定请求的唯一标识；请求ID最大长度支持32位，无字符内容限制。
+<ul>
+<li>普通请求 - 同个连接通道下不可重复，不同通道不限制；重复ID的请求，UA不受理，直接返回异常响应。</li>
+<li>取消请求 - 和普通请求限制刚好相反，该参数值唯一指定通过该连接通道已被发送的请求标识；</li>
+</ul></li>
+</ul>
+<p>如果指定未知的请求标识或是已被处理过的单次查询请求标识，UA会返回找不到请求标识之类的错误。</p>
+<p><strong>注：该参数仅仅在Websocket通道下才有效；HTTP协议将被忽略。</strong></p>
+<ul>
+<li>sub - 可选。指定是否订阅更新。0: 不订阅（缺省值）, 1: 订阅 注：HTTP下不存在推送订阅情况，设置sub=1时将返回错误响应。</li>
+</ul>
+<p><strong>取消请求</strong></p>
+<p>基于长连接通道(Websocket)的推送类请求，很多情况下我们都需要应用主动的来取消不再需要的服务，这样可以避免造成许多无必要的资源浪费。</p>
+<p>云平台提供了通用的请求取消服务（/cancel）来取消指定请求。</p>
+<p>服务示例： /cancel?qid=req0001</p>
+<p>服务PATH： /cancel</p>
+<p>服务参数： qid 唯一指定通过该连接通道已被发送的请求标识</p>
+<p><strong>使用场景</strong></p>
+<p>在不同的请求协议中，对请求串的使用可能会有些不同。</p>
+<ul>
+<li>http - 需要构建完整的URL串来完成一次请求，构建方式： http://hostname[:port] + 请求串。</li>
+<li>websocket - 一个消息体（MESSAGE），即表示一次请求。 消息体内容使用请求串填充即可。</li>
+</ul>
+<h2 id="响应格式">响应格式</h2>
+<p>云平台数据服务API目前支持的响应编码格式：json, protobuffer</p>
+<p>云平台返回的响应编码格式由开发者来指定</p>
+<p><strong>格式描述</strong></p>
+<p>响应结果由二部分构成：数据描述和数据结果</p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+     <span class="er">/***********数据描述***********/</span>
+    <span class="dt">&quot;Qid&quot;</span><span class="fu">:</span> <span class="st">&quot;0&quot;</span><span class="fu">,</span> 
+    <span class="dt">&quot;Err&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span> 
+    <span class="dt">&quot;Counter&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span> 
+     <span class="er">/***********数据结果***********/</span>
+    <span class="dt">&quot;Data&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+         <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
+         <span class="dt">&quot;MsgName&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="fu">{</span><span class="er">...</span><span class="fu">}</span><span class="ot">,</span><span class="er">...</span><span class="ot">]</span>
+    <span class="fu">}</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>字段说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Qid</td>
+<td align="left">字符串</td>
+<td align="left">请求序号(请求时指定)，唯一标识请求</td>
+</tr>
+<tr class="even">
+<td align="left">Err</td>
+<td align="left">数值</td>
+<td align="left">错误码。０: 成功； 其它值：失败</td>
+</tr>
+<tr class="odd">
+<td align="left">Counter</td>
+<td align="left">数值</td>
+<td align="left">响应的序号。从1开始递增，每响应一次就累加1</td>
+</tr>
+<tr class="even">
+<td align="left">Data</td>
+<td align="left">对象</td>
+<td align="left">具体的响应数据</td>
+</tr>
+<tr class="odd">
+<td align="left">Data.Id</td>
+<td align="left">数值</td>
+<td align="left">消息ID，指定某类响应消息类型；一般情况下，不同的数据服务返回的消息ID不一样</td>
+</tr>
+<tr class="even">
+<td align="left">Data.MsgName</td>
+<td align="left">数组</td>
+<td align="left">消息记录数组，具体消息记录内容参考各具体数据服务的响应描述; 不同的Id，MsgName的实际命名是不一样的</td>
+</tr>
+</tbody>
+</table>
+<p><strong>响应示例</strong></p>
+<p>请求示例</p>
+<p>/quote/dyna?obj=SH600000&amp;qid=123456</p>
+<p>响应示例</p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+    <span class="er">Qid</span><span class="fu">:</span> <span class="st">&quot;123456&quot;</span><span class="fu">,</span>
+    <span class="er">Err</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span>
+    <span class="er">Counter</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>
+    <span class="er">Data</span><span class="fu">:</span> <span class="fu">{</span>
+        <span class="er">Id</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span>
+        <span class="er">RepDataQuoteDynaSingle</span><span class="fu">:</span> <span class="ot">[</span>
+            <span class="fu">{</span>
+                <span class="er">Obj</span><span class="fu">:</span> <span class="st">&quot;SH600000&quot;</span><span class="fu">,</span>
+                <span class="er">Data</span><span class="fu">:</span> <span class="fu">{</span>
+                    <span class="er">Id</span><span class="fu">:</span> <span class="dv">655361</span><span class="fu">,</span>
+                    <span class="er">ShiJian</span><span class="fu">:</span> <span class="dv">369535629040</span><span class="fu">,</span>
+                    <span class="er">ZuiXinJia</span><span class="fu">:</span> <span class="dv">1597</span><span class="fu">,</span>
+                    <span class="er">KaiPanJia</span><span class="fu">:</span> <span class="dv">1579</span><span class="fu">,</span>
+                    <span class="er">ZuiGaoJia</span><span class="fu">:</span> <span class="dv">1599</span><span class="fu">,</span>
+                    <span class="er">ZuiDiJia</span><span class="fu">:</span> <span class="dv">1567</span><span class="fu">,</span>
+                    <span class="er">ZuoShou</span><span class="fu">:</span> <span class="dv">1592</span><span class="fu">,</span>
+                    <span class="er">JunJia</span><span class="fu">:</span> <span class="dv">1583</span><span class="fu">,</span>
+                    <span class="er">ZhangDie</span><span class="fu">:</span> <span class="dv">5</span><span class="fu">,</span>
+                    <span class="er">ZhangFu</span><span class="fu">:</span> <span class="dv">31</span><span class="fu">,</span>
+                    <span class="er">ZhenFu</span><span class="fu">:</span> <span class="dv">201</span><span class="fu">,</span>
+                    <span class="er">ChengJiaoLiang</span><span class="fu">:</span> <span class="dv">29226592220</span><span class="fu">,</span>
+                    <span class="er">XianShou</span><span class="fu">:</span> <span class="dv">29226592220</span><span class="fu">,</span>
+                    <span class="er">ChengJiaoE</span><span class="fu">:</span> <span class="dv">46276645232640</span><span class="fu">,</span>
+                    <span class="er">ZongChengJiaoBiShu</span><span class="fu">:</span> <span class="dv">683308</span><span class="fu">,</span>
+                    <span class="er">HuanShou</span><span class="fu">:</span> <span class="dv">77</span><span class="fu">,</span>
+                    <span class="er">LiangBi</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span>
+                    <span class="er">NeiPan</span><span class="fu">:</span> <span class="dv">15940076336</span><span class="fu">,</span>
+                    <span class="er">WaiPan</span><span class="fu">:</span> <span class="dv">13288219820</span>
+                <span class="fu">}</span>
+            <span class="fu">}</span>
+        <span class="ot">]</span>
+    <span class="fu">}</span>
+<span class="fu">}</span></code></pre></div>
+<h2 id="授权认证">授权认证</h2>
+<h3 id="获取授权令牌">获取授权令牌</h3>
+<p><strong>URL</strong></p>
+<p>/token/access</p>
+<p><strong>描述</strong></p>
+<p>传入预先分配的appid和secret key，获取授权令牌。 通过授权令牌访问大智慧云平台服务资源。</p>
+<p><strong>访问授权须通过HTTPS方式授权。</strong></p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="center">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">appid</td>
+<td align="left">字符串</td>
+<td align="left">应用ID，必填，预先分配值</td>
+<td align="center">无</td>
+</tr>
+<tr class="even">
+<td align="right">secret_key</td>
+<td align="left">字符串</td>
+<td align="left">应用安全码,必填</td>
+<td align="center">无</td>
+</tr>
+<tr class="odd">
+<td align="right">deviceid</td>
+<td align="left">字符串</td>
+<td align="left">设备ID，选填</td>
+<td align="center">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">44</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataToken&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span>
+        <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span>
+        <span class="dt">&quot;token&quot;</span><span class="fu">:</span> <span class="st">&quot;1a22fb65e84c42618fef68a8985cb457&quot;</span><span class="fu">,</span>
+        <span class="dt">&quot;create_time&quot;</span><span class="fu">:</span> <span class="dv">1443576846</span><span class="fu">,</span>
+        <span class="dt">&quot;duration&quot;</span><span class="fu">:</span> <span class="dv">86400</span><span class="fu">,</span>
+        <span class="dt">&quot;appid&quot;</span><span class="fu">:</span> <span class="st">&quot;5efa6dc3619a11e5a3490242ac1115f5&quot;</span>
+    <span class="fu">}</span><span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>返回结果说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="center">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">result</td>
+<td align="left">整型</td>
+<td align="left">返回结果:<br/> 0 授权成功，<br/>-1 授权失败，<br/>-2 appid不存在，<br/>-3 appid授权数已满</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="right">token</td>
+<td align="left">字符串</td>
+<td align="left">授权令牌</td>
+<td align="center">无</td>
+</tr>
+<tr class="odd">
+<td align="right">create_time</td>
+<td align="left">长整型</td>
+<td align="left">授权令牌创建时间</td>
+<td align="center">无</td>
+</tr>
+<tr class="even">
+<td align="right">duration</td>
+<td align="left">整型</td>
+<td align="left">授权令牌存续时间。<br/>令牌过期时间=创建时间+存续时间</td>
+<td align="center">无</td>
+</tr>
+<tr class="odd">
+<td align="right">appid</td>
+<td align="left">字符串</td>
+<td align="left">返回传入原值</td>
+<td align="center">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong></p>
+<p><a href="http://10.15.144.101/token/access?appid=5efa6dc3619a11e5a3490242ac1115f5&amp;secret_key=U0pmuLhJf6zK" title="授权地址">/token/access?appid=5efa6dc3619a11e5a3490242ac1115f5&amp;secret_key=U0pmuLhJf6zK</a></p>
+<hr />
+<h3 id="刷新授权令牌">刷新授权令牌</h3>
+<p><strong>URL</strong></p>
+<p>/token/refresh</p>
+<p><strong>描述</strong></p>
+<p>刷新授权令牌，延长令牌过期时间</p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="center">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">access_token</td>
+<td align="left">字符串</td>
+<td align="left">授权令牌</td>
+<td align="center">无</td>
+</tr>
+<tr class="even">
+<td align="right">duration</td>
+<td align="left">整型</td>
+<td align="left">存续时间:<br/>1. 当传入duration值时，按duration值刷新，duration是存续秒数，过期时间为当前时间加存续秒数<br/>2. 当未传入duration时，按最大存续秒数刷新。过期时间为当前时间加存续秒数</td>
+<td align="center">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果说明</strong></p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+    <span class="dt">&quot;Id&quot;</span><span class="fu">:</span> <span class="dv">44</span><span class="fu">,</span>
+    <span class="dt">&quot;RepDataToken&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span>
+        <span class="dt">&quot;result&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span>
+        <span class="dt">&quot;token&quot;</span><span class="fu">:</span> <span class="st">&quot;1a22fb65e84c42618fef68a8985cb457&quot;</span><span class="fu">,</span>
+        <span class="dt">&quot;refresh_time&quot;</span><span class="fu">:</span> <span class="dv">1443578582</span><span class="fu">,</span>
+        <span class="dt">&quot;duration&quot;</span><span class="fu">:</span> <span class="dv">86400</span>
+    <span class="fu">}</span><span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p><strong>返回结果说明</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="center">缺省</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">result</td>
+<td align="left">整型</td>
+<td align="left">返回结果:<br/> 0 授权成功，<br/>-1 授权失败，<br/>-2 appid不存在</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="right">token</td>
+<td align="left">字符串</td>
+<td align="left">授权令牌</td>
+<td align="center">无</td>
+</tr>
+<tr class="odd">
+<td align="right">refresh_time</td>
+<td align="left">长整型</td>
+<td align="left">授权令牌刷新时间</td>
+<td align="center">无</td>
+</tr>
+<tr class="even">
+<td align="right">duration</td>
+<td align="left">整型</td>
+<td align="left">授权令牌存续时间。<br/>令牌过期时间=刷新时间+存续时间</td>
+<td align="center">无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong></p>
+<p><a href="http://10.15.144.101/token/refresh?access_token=1a22fb65e84c42618fef68a8985cb457&amp;duration=86400" title="刷新授权令牌">/token/refresh?access_token=1a22fb65e84c42618fef68a8985cb457&amp;duration=86400</a></p>
 <h1 id="服务列表">服务列表</h1>
 <h2 id="行情服务">行情服务</h2>
 <h3 id="动态行情">动态行情</h3>
@@ -77,24 +426,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">名称</th>
-<th style="text-align: left;">类型</th>
-<th style="text-align: left;">说明</th>
-<th style="text-align: left;">缺省</th>
+<th align="left">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="left">缺省</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">obj*</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
-<td style="text-align: left;">无</td>
+<td align="left">obj*</td>
+<td align="left">字符串</td>
+<td align="left">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td align="left">无</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">field</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">字段过滤(见返回说明)</td>
-<td style="text-align: left;">无</td>
+<td align="left">field</td>
+<td align="left">字符串</td>
+<td align="left">字段过滤(见返回说明)</td>
+<td align="left">无</td>
 </tr>
 </tbody>
 </table>
@@ -128,7 +477,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="ot">]</span>
 <span class="fu">}</span></code></pre></div>
 <p><strong>示例</strong></p>
-<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<p><a href="http://10.15.144.101/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
 <h3 id="k线服务">k线服务</h3>
 <p><strong>URL</strong></p>
 <p>qoute/dyna</p>
@@ -138,24 +487,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">名称</th>
-<th style="text-align: left;">类型</th>
-<th style="text-align: left;">说明</th>
-<th style="text-align: left;">缺省</th>
+<th align="left">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="left">缺省</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">obj*</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
-<td style="text-align: left;">无</td>
+<td align="left">obj*</td>
+<td align="left">字符串</td>
+<td align="left">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td align="left">无</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">field</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">字段过滤(见返回说明)</td>
-<td style="text-align: left;">无</td>
+<td align="left">field</td>
+<td align="left">字符串</td>
+<td align="left">字段过滤(见返回说明)</td>
+<td align="left">无</td>
 </tr>
 </tbody>
 </table>
@@ -189,7 +538,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="ot">]</span>
 <span class="fu">}</span></code></pre></div>
 <p><strong>示例</strong></p>
-<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<p><a href="http://10.15.144.101/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
 <h3 id="分笔行情">分笔行情</h3>
 <p><strong>URL</strong></p>
 <p>qoute/dyna</p>
@@ -199,24 +548,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">名称</th>
-<th style="text-align: left;">类型</th>
-<th style="text-align: left;">说明</th>
-<th style="text-align: left;">缺省</th>
+<th align="left">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="left">缺省</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">obj*</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
-<td style="text-align: left;">无</td>
+<td align="left">obj*</td>
+<td align="left">字符串</td>
+<td align="left">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td align="left">无</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">field</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">字段过滤(见返回说明)</td>
-<td style="text-align: left;">无</td>
+<td align="left">field</td>
+<td align="left">字符串</td>
+<td align="left">字段过滤(见返回说明)</td>
+<td align="left">无</td>
 </tr>
 </tbody>
 </table>
@@ -250,7 +599,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="ot">]</span>
 <span class="fu">}</span></code></pre></div>
 <p><strong>示例</strong></p>
-<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<p><a href="http://10.15.144.101/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
 <h2 id="消息服务">消息服务</h2>
 <h3 id="消息发送">消息发送</h3>
 <p><strong>URL</strong></p>
@@ -261,24 +610,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">名称</th>
-<th style="text-align: left;">类型</th>
-<th style="text-align: left;">说明</th>
-<th style="text-align: left;">缺省</th>
+<th align="left">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="left">缺省</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">obj*</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
-<td style="text-align: left;">无</td>
+<td align="left">obj*</td>
+<td align="left">字符串</td>
+<td align="left">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td align="left">无</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">field</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">字段过滤(见返回说明)</td>
-<td style="text-align: left;">无</td>
+<td align="left">field</td>
+<td align="left">字符串</td>
+<td align="left">字段过滤(见返回说明)</td>
+<td align="left">无</td>
 </tr>
 </tbody>
 </table>
@@ -312,7 +661,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="ot">]</span>
 <span class="fu">}</span></code></pre></div>
 <p><strong>示例</strong></p>
-<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<p><a href="http://10.15.144.101/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
 <h3 id="消息订阅">消息订阅</h3>
 <p><strong>URL</strong></p>
 <p>qoute/dyna</p>
@@ -322,24 +671,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">名称</th>
-<th style="text-align: left;">类型</th>
-<th style="text-align: left;">说明</th>
-<th style="text-align: left;">缺省</th>
+<th align="left">名称</th>
+<th align="left">类型</th>
+<th align="left">说明</th>
+<th align="left">缺省</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">obj*</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
-<td style="text-align: left;">无</td>
+<td align="left">obj*</td>
+<td align="left">字符串</td>
+<td align="left">查询股票*表示必填，必填的字段说明放在前面。如SH600000</td>
+<td align="left">无</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">field</td>
-<td style="text-align: left;">字符串</td>
-<td style="text-align: left;">字段过滤(见返回说明)</td>
-<td style="text-align: left;">无</td>
+<td align="left">field</td>
+<td align="left">字符串</td>
+<td align="left">字段过滤(见返回说明)</td>
+<td align="left">无</td>
 </tr>
 </tbody>
 </table>
@@ -373,6 +722,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="ot">]</span>
 <span class="fu">}</span></code></pre></div>
 <p><strong>示例</strong></p>
-<p><a href="$APIHOST$/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
+<p><a href="http://10.15.144.101/quote/dyna?obj=SH600000">/quote/dyna?obj=SH600000</a></p>
 </body>
 </html>
