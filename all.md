@@ -246,7 +246,7 @@ path路径，指定云平台的应用服务名，通过它能唯一找到相应�
 
 **示例**
 
-[/token/access?appid=5efa6dc3619a11e5a3490242ac1115f5&secret_key=U0pmuLhJf6zK](http://v2.yundzh.com/token/access?appid=5efa6dc3619a11e5a3490242ac1115f5&secret_key=U0pmuLhJf6zK "授权地址")
+[/token/access?appid=5efa6dc3619a11e5a3490242ac1115f5&secret_key=U0pmuLhJf6zK](http://10.15.144.101/token/access?appid=5efa6dc3619a11e5a3490242ac1115f5&secret_key=U0pmuLhJf6zK "授权地址")
 
 -------------------------------------------------------------
 
@@ -292,7 +292,7 @@ path路径，指定云平台的应用服务名，通过它能唯一找到相应�
 
 **示例**
 
-[/token/refresh?access_token=1a22fb65e84c42618fef68a8985cb457&duration=86400](http://v2.yundzh.com/token/refresh?access_token=1a22fb65e84c42618fef68a8985cb457&duration=86400 "刷新授权令牌")
+[/token/refresh?access_token=1a22fb65e84c42618fef68a8985cb457&duration=86400](http://10.15.144.101/token/refresh?access_token=1a22fb65e84c42618fef68a8985cb457&duration=86400 "刷新授权令牌")
 
 # 服务列表
 
@@ -350,7 +350,7 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://v2.yundzh.com/quote/dyna?obj=SH600000)
+[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
 
 ### k线服务
 
@@ -404,7 +404,7 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://v2.yundzh.com/quote/dyna?obj=SH600000)
+[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
 
 ### 分笔行情
 **URL**
@@ -457,7 +457,7 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://v2.yundzh.com/quote/dyna?obj=SH600000)
+[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
 
 ## 消息服务
 
@@ -513,7 +513,7 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://v2.yundzh.com/quote/dyna?obj=SH600000)
+[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
 
 ### 消息订阅
 
@@ -567,7 +567,7 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://v2.yundzh.com/quote/dyna?obj=SH600000)
+[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
 
 ## f10服务
 
@@ -637,7 +637,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/gsgk?obj=SH600745&field=Dm,Dmcz](http://v2.yundzh.com/f10/gsgk?obj=SH600745&field=Dm,Dmcz)
+[/f10/gsgk?obj=SH600745&field=Dm,Dmcz](http://10.15.144.101/f10/gsgk?obj=SH600745&field=Dm,Dmcz)
 获取股票SH600745公司概况的Dm Dmcz字段
 
 ### 财务摘要_主要指标
@@ -697,7 +697,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/cwts/zycwzb?obj=SH600745&field=gdqy&start=-3&count=2](http://v2.yundzh.com/f10/cwts/zycwzb?obj=SH600745&field=gdqy&start=-3&count=2)
+[/f10/cwts/zycwzb?obj=SH600745&field=gdqy&start=-3&count=2](http://10.15.144.101/f10/cwts/zycwzb?obj=SH600745&field=gdqy&start=-3&count=2)
 查询SH600745财务摘要_主要指标的gdqy字段,取近三条中前两条
 
 ### 财务摘要_现金流量表
@@ -751,7 +751,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/cwts/xjllbzy?obj=SH600745&field=czxjlr&start=-3&count=2](http://v2.yundzh.com/f10/cwts/xjllbzy?obj=SH600745&field=czxjlr&start=-3&count=2)
+[/f10/cwts/xjllbzy?obj=SH600745&field=czxjlr&start=-3&count=2](http://10.15.144.101/f10/cwts/xjllbzy?obj=SH600745&field=czxjlr&start=-3&count=2)
 查询SH600745财务摘要_现金流表czxjlr字段，取近三条中的前两条
 
 ### 最新季报_单季财务指标(收益趋势用)
@@ -802,7 +802,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/zxjb/djdcwzb?obj=SH600745&field=mgjyxjll&start=-3&count=2](http://v2.yundzh.com/f10/zxjb/djdcwzb?obj=SH600745&field=mgjyxjll&start=-3&count=2)
+[/f10/zxjb/djdcwzb?obj=SH600745&field=mgjyxjll&start=-3&count=2](http://10.15.144.101/f10/zxjb/djdcwzb?obj=SH600745&field=mgjyxjll&start=-3&count=2)
 查询SH600745最新季报_单季财务指标的mgjyxjll字段，取近三条中的前两条
 
 ### 最新季报_单季利润表(收益趋势用)
@@ -860,7 +860,7 @@ qoute/dyna
 
 **示例**
 
-[/zxjb/djdleb?obj=SH600745&field=yysjjfj&start=-3&count=2](http://v2.yundzh.com/zxjb/djdleb?obj=SH600745&field=yysjjfj&start=-3&count=2)
+[/zxjb/djdleb?obj=SH600745&field=yysjjfj&start=-3&count=2](http://10.15.144.101/zxjb/djdleb?obj=SH600745&field=yysjjfj&start=-3&count=2)
 获取SH600745最新季报_单季财务指标yysjjfj字段，取最新得三条中前两条
 
 ### 股东进出_十大股东
@@ -911,7 +911,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/gdjc/sdgd?obj=SH600745&field=gbxz&start=-3&count=2](http://v2.yundzh.com/f10/gdjc/sdgd?obj=SH600745&field=gbxz&start=-3&count=2)
+[/f10/gdjc/sdgd?obj=SH600745&field=gbxz&start=-3&count=2](http://10.15.144.101/f10/gdjc/sdgd?obj=SH600745&field=gbxz&start=-3&count=2)
 获取SH600745股东进出_十大股东gbxz字段，获取最近三条的前两条
 
 ### 股东进出_股东户数
@@ -960,7 +960,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/gdjc/gdhs?obj=SH600745&field=ltgdhs&start=-3&count=2](http://v2.yundzh.com/f10/gdjc/gdhs?obj=SH600745&field=ltgdhs&start=-3&count=2)
+[/f10/gdjc/gdhs?obj=SH600745&field=ltgdhs&start=-3&count=2](http://10.15.144.101/f10/gdjc/gdhs?obj=SH600745&field=ltgdhs&start=-3&count=2)
 查询SH600745股东进出_股东户数ltgdhs字段，获取最近三条的前两条
 
 ### 股本分红_股本结构（股本股东——股本结构用）
@@ -1029,7 +1029,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/gbfh/gbjg?obj=SH600745&field=xsgyfrcg&start=-3&count=2](http://v2.yundzh.com/f10/gbfh/gbjg?obj=SH600745&field=xsgyfrcg&start=-3&count=2)
+[/f10/gbfh/gbjg?obj=SH600745&field=xsgyfrcg&start=-3&count=2](http://10.15.144.101/f10/gbfh/gbjg?obj=SH600745&field=xsgyfrcg&start=-3&count=2)
 查询SH600745股本分红_股本结构中xsgyfrcg字段，获取最近三条的前两条
 
 ### 股东进出_十大流通股东
@@ -1080,7 +1080,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/gdjc/sdltgd?obj=SH600745&field=gbxz&start=-3&count=2](http://v2.yundzh.com/f10/gdjc/sdltgd?obj=SH600745&field=gbxz&start=-3&count=2)
+[/f10/gdjc/sdltgd?obj=SH600745&field=gbxz&start=-3&count=2](http://10.15.144.101/f10/gdjc/sdltgd?obj=SH600745&field=gbxz&start=-3&count=2)
 获取SH600745股东进出_十大流通股东的gbxz字段，获取近三条的前两条
 
 ### 股本分红_分红扩股
@@ -1133,7 +1133,7 @@ qoute/dyna
 
 **示例**
 
-[/f10/gbfh/fhkg?obj=SH600745&field=Zhjyr,mgzz&start=-3&count=2](http://v2.yundzh.com/f10/gbfh/fhkg?obj=SH600745&field=Zhjyr,mgzz&start=-3&count=2)
+[/f10/gbfh/fhkg?obj=SH600745&field=Zhjyr,mgzz&start=-3&count=2](http://10.15.144.101/f10/gbfh/fhkg?obj=SH600745&field=Zhjyr,mgzz&start=-3&count=2)
 查询SH600745股本分红_分红扩股的Zhjyr,mgzz字段，获取近三条的前两条
 
 ## 新闻公告服务
@@ -1191,7 +1191,7 @@ qoute/dyna
 
 **示例**
 
-[/news?obj=SH600745&type=1&start=-5&count=2](http://v2.yundzh.com/news?obj=SH600745,SZ300065&type=1&start=-5&count=2)
+[/news?obj=SH600745&type=1&start=-5&count=2](http://10.15.144.101/news?obj=SH600745,SZ300065&type=1&start=-5&count=2)
 查询SH600745新闻数据，获取近五条的前两条
 
 ### 新闻公告中心
@@ -1244,7 +1244,7 @@ qoute/dyna
 
 **示例**
 
-[/news?type=1&start=-5&count=2](http://v2.yundzh.com/news?type=1&start=-5&count=2)
+[/news?type=1&start=-5&count=2](http://10.15.144.101/news?type=1&start=-5&count=2)
 查询近五条的前两条新闻中心数据
 
 ## 经济数据预测
@@ -1290,7 +1290,7 @@ forecasts/yzxyjyc
 
 **示例**
 
-[/forecasts/yzxyjyc?obj=SH600000](http://v2.yundzh.com/forecasts/yzxyjyc?obj=SH600000)
+[/forecasts/yzxyjyc?obj=SH600000](http://10.15.144.101/forecasts/yzxyjyc?obj=SH600000)
 获取SH600000一致性业绩预测
 
 ### 一致性投资评级
@@ -1332,7 +1332,7 @@ forecasts/yzxtzpj
 
 **示例**
 
-[/forecasts/yzxtzpj?obj=SH600000](http://v2.yundzh.com/forecasts/yzxtzpj?obj=SH600000)
+[/forecasts/yzxtzpj?obj=SH600000](http://10.15.144.101/forecasts/yzxtzpj?obj=SH600000)
 获取SH600000一致性投资评级
 
 ### 个股业绩预测
@@ -1380,7 +1380,7 @@ forecasts/ggyjyc
 
 **示例**
 
-[/forecasts/ggyjyc?obj=SH600000](http://v2.yundzh.com/forecasts/ggyjyc?obj=SH600000)
+[/forecasts/ggyjyc?obj=SH600000](http://10.15.144.101/forecasts/ggyjyc?obj=SH600000)
 获取SH600000业绩预测
 
 ### 个股投资研报
@@ -1426,6 +1426,6 @@ forecasts/ggyjyc
 
 **示例**
 
-[/forecasts/ggtzyb?obj=SH600000](http://v2.yundzh.com/forecasts/ggtzyb?obj=SH600000)
+[/forecasts/ggtzyb?obj=SH600000](http://10.15.144.101/forecasts/ggtzyb?obj=SH600000)
 获取SH600000投资研报信息
 

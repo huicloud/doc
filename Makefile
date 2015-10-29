@@ -1,3 +1,4 @@
+PUBLICAPIHOST = http\:\/\/v2\.yundzh\.com
 APIHOST = http\:\/\/10\.15\.144\.101
 REPLACESTR = \$$APIHOST\\$$
 
@@ -8,7 +9,7 @@ pub-md:
 	rm -f public.md
 	for line in `cat filelist`; \
 	do \
-	sed "s/$(REPLACESTR)/$(APIHOST)/" ./src/$$line >> public.md; \
+	sed "s/$(REPLACESTR)/$(PUBLICAPIHOST)/" ./src/$$line >> public.md; \
 	done
 html:md
 
