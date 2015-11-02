@@ -1,5 +1,5 @@
 --生成html
-pandoc public.md -t html5 -o public.html --toc --smart --template=pm-template
+pandoc public.md -t html5 -o public.html --toc --smart --template=template
 --生成pdf
 pandoc public.md -o public.pdf --toc --smart --template=template --latex-engine=xelatex
 
