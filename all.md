@@ -335,8 +335,8 @@ quote/dyna
                 "ZuoShou": 16.59,   //昨收价,单位元
                 "JunJia": 16.52,    //均价,单位元
                 "ZhangDie": -0.12,  //涨跌,单位元
-                "ZhangFu": -0.72,   //涨幅,单位元
-                "ZhenFu": 1.69, //振幅,单位元
+                "ZhangFu": -0.72,   //涨幅-0.72%
+                "ZhenFu": 1.69, //振幅-0.72%
                 "ChengJiaoLiang": 31601300, //总成交量，单位股
                 "XianShou": 4600,   //最新一笔交量，单位股
                 "ChengJiaoE": 522210848,    //总成交额,单位元
@@ -530,47 +530,201 @@ quote/min
 
 **URL**
 
-qoute/stkdata
+stkdata
 
 **描述**
 
-大行情服务,包含下列信息：个股信息,动态行情,买卖盘,技术指标,财务数据
+大行情服务,包含下列信息：个股信息,动态行情,买卖盘,分级基金,财务数据,统计信息
 
 **参数说明**
 
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
-|obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段过滤(见返回说明)|无|
+|obj\*|字符串|查询股票\*表示必填。与gql不能共存,可以取多只股票，中间用逗号隔开。如SH600000,SH601519。|无|
+|gql\*|字符串|查询板块成分股\*表示必填。与obj不能共存,可以取多个板块。如gql=block=股票\\市场分类\\深证A股|无|
+|field\*|字符串|查询字段,可选项见表后说明,可以取多个字段,中间用逗号隔开。|无|
+|orderby|字符串|需要排序的字段，排序字段只能从field可选项中任选其一.该字段会自动加入到响应信息中.|无|
+|desc|字符串|排序方式, 可选项包括:false(升序),true(降序)|默认为false(升序)|
+|start|字符串|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选.例如0、1和空都表示第1行开始，-1表示最后一行开 始，7表示从第7行开始|该参数省略或0表示不进行行筛选
+|count|字符串|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start）|该参数省略或者0或者空表示start位置之后的所有行
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+
+*field* 可选项包括:
+
+-  个股信息字段
+
+ZhongWenJianCheng,LeiXing,ZiLeiXing,LeiXingMingCheng,Chen
+gJiaoLiangDanWei
+
+-  动态行情字段
+
+ZuiXinJia,KaiPanJia,ZuiGaoJia,ZuiDiJia,ZuoShou,JunJia,ZhangDie,
+ZhangFu,ZhenFu,ChengJiaoLiang,XianShou,ChengJiaoE,ZongChengJiaoBiShu,HuanShou,Li
+angBi,NeiPan,WaiPan
+
+-  买卖盘相关字段
+
+FenZhongZhangFu1,FenZhongZhangFu2,FenZhongZhangFu3,FenZhongZ
+hangFu4,FenZhongZhangFu5,ZhangTing,DieTing,ShiJian,WeiTuoMaiRuJia1,WeiTuoMaiRuJi
+a2,WeiTuoMaiRuJia3,WeiTuoMaiRuJia4,WeiTuoMaiRuJia5,WeiTuoMaiRuLiang1,WeiTuoMaiRu
+Liang2,WeiTuoMaiRuLiang3,WeiTuoMaiRuLiang4,WeiTuoMaiRuLiang5,WeiTuoMaiChuJia1,We
+iTuoMaiChuJia2,WeiTuoMaiChuJia3,WeiTuoMaiChuJia4,WeiTuoMaiChuJia5,WeiTuoMaiChuLi
+ang1,WeiTuoMaiChuLiang2,WeiTuoMaiChuLiang3,WeiTuoMaiChuLiang4,WeiTuoMaiChuLiang5
+,WeiBi,WeiCha,
+
+-  分级基金字段
+
+FJJJLeiXing,ZhengTiYiJia,MShiShiJingZhi,MShangZheXuZhang,MXiaZheXu
+Die,JiaGeGangGan,YinHanShouYi
+
+-  财务数据字段
+
+PinZhongObj,BaoGaoQi,ShangShiRiQi,JingZiChanShouYi
+Lv,MeiGuJingYingXianJin,MeiGuShouYi,MeiGuJingZiChan,MeiGuGongJiJin,MeiGuWeiFenPe
+i,GuDongQuanYiBi,JingLiRunTongBi,ZhuYingShouRuTongBi,XiaoShouMaoLiLv,TiaoZhengMe
+iGuJingZi,ZongZiChan,LiuDongZiChan,GuDingZiChan,WuXingZiChan,LiuDongFuZhai,Chang
+QiFuZhai,ZongFuZhai,GuDongQuanYi,ZiBenGongJiJin,JingYingXianJinLiuLiang,TouZiXia
+nJinLiuLiang,ChouZiXianJinLiuLiang,XianJinZengJiaE,ZhuYingShouRu,ZhuYingLiRun,Yi
+ngYeLiRun,TouZiShouYi,YingYeWaiShouZhi,LiRunZongE,JingLiRun,WeiFenPeiLiRun,JingW
+aiShangShiGu,QiTaLiuTongGu,XianShouGuHeJi,GuoJiaChiGu,GuoYouFaRenGu,JingNeiFaRen
+Gu,JingNeiZiRanRenGu,QiTaFaQiRenGu,MuJiFaRenGu,JingWaiFaRenGu,JingWaiZiRanRenGu,
+YouXianGuHuoQiTa,ZongGuBen,LiuTongAGu,LiuTongBGu,WuXianShouGuHeJi
+
+-  统计信息字段
+
+TJZhangDiePing(响应字段包括:ShangZhangJiaShu,XiaDieJiaShu,PingPanJiaShu,AGuShangZhangJiaShu,AGuXiaDieJiaShu,AGuPingPanJiaShu,BGuShangZhangJiaShu,BGuXiaDieJiaShu,BGuPingPanJiaShu,QiTaShangZhangJiaShu,QiTaXiaDieJiaShu,QiTaPingPanJiaShu),TJChengJiaoE(响应字段包括:AGuChengJiaoE,BGuChengJiaoE,JiJinChengJiaoE,QiTaChengJiaoE)
 
 **结果说明**
 
 ```json
 
 {
-    "Id": 20,
-    "RepDataQuoteDynaSingle": [
+    "Id": 27, //大行情消息ID
+    "RepDataStkData": [
         {
-            "Obj": "SH601519",
-            "Data": {
-                "Id": 638231067,//说明
-                "ShiJian": 369065887036,//时间
-                "ZuiXinJia": 970,//最新价
-                "KaiPanJia": 890,
-                "ZuiGaoJia": 972,
-                "ZuiDiJia": 868,
-                "ZuoShou": 894,
-                "JunJia": 909,
-                "ZhangDie": 76,
-                "ZhangFu": 850,
-                "ZhenFu": 1163,
-                "ChengJiaoLiang": 10520025720,
-                "XianShou": 704460,
-                "ChengJiaoE": 9579555514880,
-                "ZongChengJiaoBiShu": 680146,
-                "NeiPan": 4850371956,
-                "WaiPan": 5671357700
-            }
+            "obj": "SH601519",  //交易代码
+            "ZhongWenJianCheng": "大智慧", //中文简称
+            "ZuiXinJia": 81.14, //最新价(元)
+            "KaiPanJia": 83.75, //开盘价(元)
+            "ZuiGaoJia": 83.79, //最高价(元)
+            "ZuiDiJia": 78.8, //最低价(元)
+            "ZuoShou": 81.8,  //昨收(元)
+            "JunJia": 81.79,  //均价(元)
+            "ZhangDie": -0.66,  //涨跌(元)
+            "ZhangFu": -0.81, //涨幅-0.81%
+            "ZhenFu": 6.1,  //振幅6.1%
+            "ChengJiaoLiang": 15216100, //成交量(股)
+            "XianShou": 1700, //现手(股)
+            "ChengJiaoE": 1.244542464e+09,  //成交额(元)
+            "ZongChengJiaoBiShu": 33042,  //总成交笔数
+            "HuanShou": 6.04, //换手6.04%
+            "LiangBi": 0.61,  //量比
+            "NeiPan": 7540900,  //内盘(股)
+            "WaiPan": 7675200,  //外盘(股)
+            "WeiTuoMaiRuJia1": 81.14, //委托买入价1(元)
+            "WeiTuoMaiRuJia2": 81.13, //委托买入价2(元)
+            "WeiTuoMaiRuJia3": 81.12, //委托买入价3(元)
+            "WeiTuoMaiRuJia4": 81.1,  //委托买入价4(元)
+            "WeiTuoMaiRuJia5": 81,  //委托买入价5(元)
+            "WeiTuoMaiRuLiang1": 1300,  //委托买入量1(股)
+            "WeiTuoMaiRuLiang2": 100, //委托买入量2(股)
+            "WeiTuoMaiRuLiang3": 1000,  //委托买入量3(股)
+            "WeiTuoMaiRuLiang4": 600, //委托买入量4(股)
+            "WeiTuoMaiRuLiang5": 34800, //委托买入量5(股)
+            "WeiTuoMaiChuJia1": 81.2, //委托卖出价1(元)
+            "WeiTuoMaiChuJia2": 81.29,  //委托卖出价2(元)
+            "WeiTuoMaiChuJia3": 81.3, //委托卖出价3(元)
+            "WeiTuoMaiChuJia4": 81.48,  //委托卖出价4(元)
+            "WeiTuoMaiChuJia5": 81.49,  //委托卖出价5(元)
+            "WeiTuoMaiChuLiang1": 500,  //委托卖出量1(股)
+            "WeiTuoMaiChuLiang2": 800,  //委托卖出量2(股)
+            "WeiTuoMaiChuLiang3": 600,  //委托卖出量3(股)
+            "WeiTuoMaiChuLiang4": 500,  //委托卖出量4(股)
+            "WeiTuoMaiChuLiang5": 100,  //委托卖出量5(股)
+            "WeiBi": 87.59, //委比87.59%
+            "WeiCha": 353,  //委差(手)
+            "FenZhongZhangFu1": 0.01, //1分钟涨幅(元)
+            "FenZhongZhangFu2": -0.18,  //2分钟涨幅(元)
+            "FenZhongZhangFu3": -0.67,  //3分钟涨幅(元)
+            "FenZhongZhangFu4": -0.32,  //4分钟涨幅(元)
+            "FenZhongZhangFu5": -0.28,  //5分钟涨幅(元)
+            "ZhangTing": 89.98, //涨停价(元)
+            "DieTing": 73.62, //跌停价(元)
+            "ShiJian": 1446532698,  //Unix时间
+            "LeiXing": 1, //类型: (0，指数;1，股票;2，基金;3，债券)
+            "ZiLeiXing": 65,  //子类型(65, A股;66, B股)
+            "LeiXingMingCheng": "创业板",  //类型名称
+            "ChengJiaoLiangDanWei": 100,  //每手股数
+            "PinZhongObj": "SH601519",  //交易代码
+            "BaoGaoQi": "20150930000000", //报告期
+            "ShangShiRiQi": "20091225", //上市日期
+            "MeiGuShouYi": 0.9102,  //每股收益(元)
+            "MeiGuJingZiChan": 3.0864,  //每股净资产(元)
+            "JingZiChanShouYiLv": 29.4899,  //净资产收益率
+            "MeiGuJingYingXianJin": 1.7779, //每股经营现金(元)
+            "MeiGuGongJiJin": 0.6636, //每股公积金(元)
+            "MeiGuWeiFenPei": 1.3733, //每股未分配(元)
+            "GuDongQuanYiBi": 59.0188,  //股东权益比
+            "JingLiRunTongBi": 2179.6632, //净利润同比
+            "ZhuYingShouRuTongBi": 378.8595,  //主营收入同比
+            "XiaoShouMaoLiLv": 84.2389, //销售毛利率
+            "TiaoZhengMeiGuJingZi": 3.0291, //调整每股净资(元)
+            "ZongZiChan": 281137.4462,  //总资产(万元)
+            "LiuDongZiChan": 243946.7482, //流动资产(万元)
+            "GuDingZiChan": 14928.2858, //固定资产(万元)
+            "WuXingZiChan": 2688.5318,  //无形资产(万元)
+            "LiuDongFuZhai": 114239.7458, //流动负债(万元)
+            "ChangQiFuZhai": 973.8254,  //长期负债(万元)
+            "ZongFuZhai": 115213.5712,  //总负债(万元)
+            "GuDongQuanYi": 165923.875, //股东权益(万元)
+            "ZiBenGongJiJin": 35677.5876, //资本公积金(万元)
+            "JingYingXianJinLiuLiang": 95581.4774,  //经营现金流量(万元)
+            "TouZiXianJinLiuLiang": -18257.3101,  //投资现金流量(万元)
+            "ChouZiXianJinLiuLiang": -2150.4, //筹资现金流量(万元)
+            "XianJinZengJiaE": 75176.046, //现金增加额(万元)
+            "ZhuYingShouRu": 76795.1913,  //主营收入(万元)
+            "ZhuYingLiRun": 63036.5085, //主营利润(万元)
+            "YingYeLiRun": 56806.2889,  //营业利润(万元)
+            "TouZiShouYi": 17663.857, //投资收益(万元)
+            "YingYeWaiShouZhi": 1643.1879,  //营业外收支(万元)
+            "LiRunZongE": 58449.4768, //利润总额(万元)
+            "JingLiRun": 48930.8767,  //净利润(万元)
+            "WeiFenPeiLiRun": 73828.984,  //未分配利润(万元)
+            "ZongGuBen": 53760, //总股本(万股)
+            "WuXianShouGuHeJi": 26199.8076, //无限售股合计(万股)
+            "LiuTongAGu": 26199.8076, //流通A股(万股)
+            "LiuTongBGu": 0,  //流通B股(万股)
+            "JingWaiShangShiGu": 0, //境外上市股(万股)
+            "QiTaLiuTongGu": 0, //其他流通股(万股)
+            "XianShouGuHeJi": 27560.1924, //限售股合计(万股)
+            "GuoJiaChiGu": 0, //国家持股(万股)
+            "GuoYouFaRenGu": 0, //国有法人股(万股)
+            "JingNeiFaRenGu": 4268.1924,  //境内法人股(万股)
+            "JingNeiZiRanRenGu": 0, //境内自然人股(万股)
+            "QiTaFaQiRenGu": null,  //其他法人股(万股)
+            "MuJiFaRenGu": 0, //募集法人股(万股)
+            "JingWaiFaRenGu": 0,  //境外自然人股(万股)
+            "JingWaiZiRanRenGu": 0, //优先股或其他(万股)
+            "YouXianGuHuoQiTa": 0, //优先股或其他(万股)
+            "ShangZhangJiaShu": 813,  //上涨家数
+            "XiaDieJiaShu": 1028, //下跌家数
+            "PingPanJiaShu": 284, //平盘家数
+            "AGuShangZhangJiaShu": 605, //A股上涨家数
+            "AGuXiaDieJiaShu": 643, //A股下跌家数
+            "AGuPingPanJiaShu": 251,  //A股平盘家数
+            "AGuChengJiaoE": 328513250740,  //A股成交额(元)
+            "BGuShangZhangJiaShu": 0, //B股上涨家数
+            "BGuXiaDieJiaShu": 0, //B股下跌家数
+            "BGuPingPanJiaShu": 0,  //B股平盘家数
+            "BGuChengJiaoE": 0, //B股成交额(元)
+            "JiJinShangZhangJiaShu": 0, //基金上涨家数
+            "JiJinXiaDieJiaShu": 0, //基金下跌家数
+            "JiJinPingPanJiaShu": 0,  //基金平盘家数
+            "JiJinChengJiaoE": 0, //基金成交额(元)
+            "QiTaShangZhangJiaShu": 208,  //其它上涨家数
+            "QiTaXiaDieJiaShu": 385,  //其它下跌家数
+            "QiTaPingPanJiaShu": 33,  //其它平盘家数
+            "QiTaChengJiaoE": 16723708576830  //其它成交额(元)
         }
     ]
 }
@@ -578,7 +732,9 @@ qoute/stkdata
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
+-  查找股票代码为SH601519的个股信息
+
+[/stkdata?obj=SH601519&field=ZhongWenJianCheng,LeiXing,ZiLeiXing](http://10.15.144.101/stkdata?obj=SH601519&field=ZhongWenJianCheng,LeiXing,ZiLeiXing)
 
 ### 键盘宝服务
 
@@ -1777,3 +1933,54 @@ forecasts/ggyjyc
 [/block/obj?gql=block=股票\\\\主题投资\\\\上海自贸区](http://10.15.144.101/block/obj?gql=block=股票\\\\主题投资\\\\上海自贸区)
 获取板块"股票\\\\主题投资\\\\上海自贸区"下的所有成分股
 
+### /user/getprop
+用户信息获取服务
+
+**URL**
+
+user/getprop
+
+**参数说明**
+
+\*表示必填
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|userid\*|字符串|用户ID|无|
+|accounttype\*|字符串|账户类型，account或deviceid|无|
+|field|字符串|用户数据字段，不填则获取全部用户数据，查询多个时用","分割|无|
+
+**结果说明**
+
+若查询字段错误或结果未找到都会查询失败报错
+以下是查询成功的结果
+
+```json
+{
+    "Qid": "",
+    "Err": 0,
+    "Counter": 1,
+    "Data": {
+        "Id": 69,
+        "RepDataUserGetPropResponse": [
+            {
+                "userid": "18831501987",
+                "accounttype": "account",
+                "timestamp": 370189980757,//时间戳，用户更新时间
+                "attrs": [
+                    {
+                        "key": "level",//用户星级
+                        "value": "3"//3星用户
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+**示例**
+
+以下URL用以获得ID为18831501987、账户类型为account的用户的星级信息
+
+[/user/getprop?userid=18831501987&accounttype=account&field=level](http://10.15.144.101/user/getprop?userid=18831501987&accounttype=account&field=level)
