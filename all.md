@@ -302,7 +302,7 @@ path路径，指定云平台的应用服务名，通过它能唯一找到相应�
 
 **URL**
 
-qoute/dyna
+quote/dyna
 
 **描述**
 
@@ -312,91 +312,101 @@ qoute/dyna
 
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
-|obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
+|obj\*|字符串|查询股票代码，可以取多只股票，中间用逗号隔开.\*表示必填，必填的字段说明放在前面。如SH600000|无|
 |field|字符串|字段过滤(见返回说明)|无|
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
 
 **结果说明**
 
 ```json
 
 {
-    "Id": 20,
-    "RepDataQuoteDynaSingle": [
+    "Id": 20,   //动态行情消息ID
+    "RepDataQuoteDynaSingle": [ 
         {
-            "Obj": "SH601519",
+            "Obj": "SH600000",  //股票代码
             "Data": {
-                "Id": 638231067,//说明
-                "ShiJian": 369065887036,//时间
-                "ZuiXinJia": 970,//最新价
-                "KaiPanJia": 890,
-                "ZuiGaoJia": 972,
-                "ZuiDiJia": 868,
-                "ZuoShou": 894,
-                "JunJia": 909,
-                "ZhangDie": 76,
-                "ZhangFu": 850,
-                "ZhenFu": 1163,
-                "ChengJiaoLiang": 10520025720,
-                "XianShou": 704460,
-                "ChengJiaoE": 9579555514880,
-                "ZongChengJiaoBiShu": 680146,
-                "NeiPan": 4850371956,
-                "WaiPan": 5671357700
+                "Id": 481148,   //序号
+                "ShiJian": 1446184227,  //Unix时间
+                "ZuiXinJia": 16.47, //最新价,单位元
+                "KaiPanJia": 16.5,  //今开价,单位元
+                "ZuiGaoJia": 16.68, //最高价,单位元
+                "ZuiDiJia": 16.4,   //最低价,单位元
+                "ZuoShou": 16.59,   //昨收价,单位元
+                "JunJia": 16.52,    //均价,单位元
+                "ZhangDie": -0.12,  //涨跌,单位元
+                "ZhangFu": -0.72,   //涨幅-0.72%
+                "ZhenFu": 1.69, //振幅-0.72%
+                "ChengJiaoLiang": 31601300, //总成交量，单位股
+                "XianShou": 4600,   //最新一笔交量，单位股
+                "ChengJiaoE": 522210848,    //总成交额,单位元
+                "ZongChengJiaoBiShu": 16078,    //总成交笔数
+                "HuanShou": 0.17,   //换手,百分比(0.03%)
+                "LiangBi": 0.67,    //量比
+                "NeiPan": 16414600, //内盘成交量，单位股
+                "WaiPan": 15186700  //外盘成交量，单位股
             }
         }
     ]
 }
+
 ```
 
 **示例**
 
+- 查找股票代码为SH600000的动态行情信息
+
 [/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
+
+- 查找股票代码为SH600000的动态行情中的id，时间、最新价字段信息
+
+[/quote/dyna?obj=SH600000&field=Id,ShiJian,ZuiXinJia](http://10.15.144.101/quote/dyna?obj=SH600000&field=Id,ShiJian,ZuiXinJia)
 
 ### k线服务
 
 **URL**
 
-qoute/dyna
+quote/kline
 
 **描述**
 
-动态行情服务
+K线服务
 
 **参数说明**
 
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
-|obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
+|obj\*|字符串|查询股票代码，可以取多只股票，中间用逗号隔开.\*表示必填，必填的字段说明放在前面。如SH600000|无|
+|period\*|字符串|K线的周期,可选周期包括:1min(1分钟),5min,15min,30min,60min,120min,1day(1天),week(1周),month(1月)|无|
 |field|字符串|字段过滤(见返回说明)|无|
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+|begin_time|字符串|年月日-时分秒-毫秒-时区.例:begin_time=20140822-154033-223-8|该参数省略或0表示最早记录时间
+|end_time|字符串|年月日-时分秒-毫秒-时区.例:end_time=20150822-154033-223-8|该参数省略或0表示获取到当前时间
+|start|字符串|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选.例如0、1和空都表示第1行开始，-1表示最后一行开 始，7表示从第7行开始|该参数省略或0表示不进行行筛选
+|count|字符串|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start）|该参数省略或者0或者空表示start位置之后的所有行
+|split|字符串|除权标记.可选项包括:0(不复权),1(前复权),2(后复权)|0(不复权)
 
 **结果说明**
 
 ```json
 
 {
-    "Id": 20,
-    "RepDataQuoteDynaSingle": [
+    "Id": 21,   /K线消息ID
+    "RepDataQuoteKlineSingle": [
         {
-            "Obj": "SH601519",
-            "Data": {
-                "Id": 638231067,//说明
-                "ShiJian": 369065887036,//时间
-                "ZuiXinJia": 970,//最新价
-                "KaiPanJia": 890,
-                "ZuiGaoJia": 972,
-                "ZuiDiJia": 868,
-                "ZuoShou": 894,
-                "JunJia": 909,
-                "ZhangDie": 76,
-                "ZhangFu": 850,
-                "ZhenFu": 1163,
-                "ChengJiaoLiang": 10520025720,
-                "XianShou": 704460,
-                "ChengJiaoE": 9579555514880,
-                "ZongChengJiaoBiShu": 680146,
-                "NeiPan": 4850371956,
-                "WaiPan": 5671357700
-            }
+            "Obj": "SH600000",  //股票代码
+            "Data": [
+                {
+                    "ShiJian": 1446134400,  //Unix时间
+                    "KaiPanJia": 16.5,  //开盘价，单位元
+                    "ZuiGaoJia": 16.68, //最高价，单位元
+                    "ZuiDiJia": 16.4,   //最低价，单位元
+                    "ShouPanJia": 16.46,    //收盘价，单位元
+                    "ChengJiaoLiang": 37217900, //总成交量，单位股
+                    "ChengJiaoE": 614684544,    //总成交额,单位元
+                    "ChengJiaoBiShu": 18404 //总成交笔数
+                }
+            ]
         }
     ]
 }
@@ -404,52 +414,55 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
+- 查找股票代码为SH600000的日K线信息
+
+[/quote/kline?obj=SH600000&period=1day](http://10.15.144.101/quote/kline?obj=SH600000&period=1day)
+
+- 查找股票代码为SH600000的日K线的从倒数第10条开始的连续5条数据的最高价字段信息
+
+[/quote/kline?obj=SH600000&period=1day&field=ZuiGaoJia&start=-10&count=5](http://10.15.144.101/quote/kline?obj=SH600000&period=1day&field=ZuiGaoJia&start=-10&count=5)
 
 ### 分笔行情
+
 **URL**
 
-qoute/dyna
+quote/tick
 
 **描述**
 
-动态行情服务
+分笔数据服务
 
 **参数说明**
 
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
-|obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
+|obj\*|字符串|查询股票代码，可以取多只股票，中间用逗号隔开.\*表示必填，必填的字段说明放在前面。如SH600000|无|
 |field|字符串|字段过滤(见返回说明)|无|
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+|begin_time|字符串|年月日-时分秒-毫秒-时区.例:begin_time=20140822-154033-223-8|该参数省略或0表示最早记录时间
+|end_time|字符串|年月日-时分秒-毫秒-时区.例:end_time=20150822-154033-223-8|该参数省略或0表示获取到当前时间
+|start|字符串|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选.例如0、1和空都表示第1行开始，-1表示最后一行开 始，7表示从第7行开始|该参数省略或0表示不进行行筛选
+|count|字符串|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start）|该参数省略或者0或者空表示start位置之后的所有行
 
 **结果说明**
 
 ```json
 
 {
-    "Id": 20,
-    "RepDataQuoteDynaSingle": [
+    "Id": 22,   //分笔消息ID
+    "RepDataQuoteTickSingle": [
         {
-            "Obj": "SH601519",
-            "Data": {
-                "Id": 638231067,//说明
-                "ShiJian": 369065887036,//时间
-                "ZuiXinJia": 970,//最新价
-                "KaiPanJia": 890,
-                "ZuiGaoJia": 972,
-                "ZuiDiJia": 868,
-                "ZuoShou": 894,
-                "JunJia": 909,
-                "ZhangDie": 76,
-                "ZhangFu": 850,
-                "ZhenFu": 1163,
-                "ChengJiaoLiang": 10520025720,
-                "XianShou": 704460,
-                "ChengJiaoE": 9579555514880,
-                "ZongChengJiaoBiShu": 680146,
-                "NeiPan": 4850371956,
-                "WaiPan": 5671357700
-            }
+            "Obj": "SH600000",  //股票代码
+            "Data": [
+                {
+                    "Id": 0,    //序号
+                    "ShiJian": 1446188373,  //Unix时间
+                    "ChengJiaoJia": 16.39,  //成交价,单位元
+                    "ChengJiaoLiang": 45302500, //成交量，单位股
+                    "ChengJiaoE": 747476032,    //成交额,单位元
+                    "ChengJiaoDanBiShu": 21907  //成交笔数
+                }
+            ]
         }
     ]
 }
@@ -457,7 +470,396 @@ qoute/dyna
 
 **示例**
 
-[/quote/dyna?obj=SH600000](http://10.15.144.101/quote/dyna?obj=SH600000)
+- 查找股票代码为SH600000的分笔信息
+
+[/quote/tick?obj=SH600000](http://10.15.144.101/quote/tick?obj=SH600000)
+
+### 分时走势服务
+
+**URL**
+
+quote/min
+
+**描述**
+
+分时走势服务
+
+**参数说明**
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|obj\*|字符串|查询股票代码，可以取多只股票，中间用逗号隔开.\*表示必填，必填的字段说明放在前面。如SH600000|无|
+|field|字符串|字段过滤(见返回说明)|无|
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+|begin_time|字符串|年月日-时分秒-毫秒-时区.例:begin_time=20140822-154033-223-8|该参数省略或0表示最早记录时间
+|end_time|字符串|年月日-时分秒-毫秒-时区.例:end_time=20150822-154033-223-8|该参数省略或0表示获取到当前时间
+|start|字符串|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选.例如0、1和空都表示第1行开始，-1表示最后一行开 始，7表示从第7行开始|该参数省略或0表示不进行行筛选
+|count|字符串|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start）|该参数省略或者0或者空表示start位置之后的所有行
+|prefix|字符串|集合竞价标记.可选项包括:0(无集合竞价),1(带集合竞价)|0(无集合竞价)
+
+**结果说明**
+
+```json
+
+{
+    "Id": 23,   //分时走势消息ID
+    "RepDataQuoteMinSingle": [
+        {
+            "Obj": "SH600000",  //股票代码
+            "Data": [
+                {
+                    "ShiJian": 1446187860,  //Unix时间
+                    "ChengJiaoJia": 16.41,  //成交价,单位元
+                    "ChengJiaoLiang": 104200,   //成交量，单位股
+                    "ChengJiaoE": 1711424,  //成交额,单位元
+                    "JunJia": 16.504    //均价,单位元
+                }
+            ]
+        }
+    ]
+}
+```
+
+**示例**
+
+- 查找股票代码为SH600000的分时信息
+
+[/quote/min?obj=SH600000](http://10.15.144.101/quote/min?obj=SH600000)
+
+### 大行情服务
+
+**URL**
+
+stkdata
+
+**描述**
+
+大行情服务,包含下列信息：个股信息,动态行情,买卖盘,分级基金,财务数据,统计信息
+
+**参数说明**
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|obj\*|字符串|查询股票\*表示必填。与gql不能共存,可以取多只股票，中间用逗号隔开。如SH600000,SH601519。|无|
+|gql\*|字符串|查询板块成分股\*表示必填。与obj不能共存,可以取多个板块。如gql=block=股票\\市场分类\\深证A股|无|
+|field\*|字符串|查询字段,可选项见表后说明,可以取多个字段,中间用逗号隔开。|无|
+|orderby|字符串|需要排序的字段，排序字段只能从field可选项中任选其一.该字段会自动加入到响应信息中.|无|
+|desc|字符串|排序方式, 可选项包括:false(升序),true(降序)|默认为false(升序)|
+|start|字符串|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选.例如0、1和空都表示第1行开始，-1表示最后一行开 始，7表示从第7行开始|该参数省略或0表示不进行行筛选
+|count|字符串|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start）|该参数省略或者0或者空表示start位置之后的所有行
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+
+*field* 可选项包括:
+
+-  个股信息字段
+
+ZhongWenJianCheng,LeiXing,ZiLeiXing,LeiXingMingCheng,Chen
+gJiaoLiangDanWei
+
+-  动态行情字段
+
+ZuiXinJia,KaiPanJia,ZuiGaoJia,ZuiDiJia,ZuoShou,JunJia,ZhangDie,
+ZhangFu,ZhenFu,ChengJiaoLiang,XianShou,ChengJiaoE,ZongChengJiaoBiShu,HuanShou,Li
+angBi,NeiPan,WaiPan
+
+-  买卖盘相关字段
+
+FenZhongZhangFu1,FenZhongZhangFu2,FenZhongZhangFu3,FenZhongZ
+hangFu4,FenZhongZhangFu5,ZhangTing,DieTing,ShiJian,WeiTuoMaiRuJia1,WeiTuoMaiRuJi
+a2,WeiTuoMaiRuJia3,WeiTuoMaiRuJia4,WeiTuoMaiRuJia5,WeiTuoMaiRuLiang1,WeiTuoMaiRu
+Liang2,WeiTuoMaiRuLiang3,WeiTuoMaiRuLiang4,WeiTuoMaiRuLiang5,WeiTuoMaiChuJia1,We
+iTuoMaiChuJia2,WeiTuoMaiChuJia3,WeiTuoMaiChuJia4,WeiTuoMaiChuJia5,WeiTuoMaiChuLi
+ang1,WeiTuoMaiChuLiang2,WeiTuoMaiChuLiang3,WeiTuoMaiChuLiang4,WeiTuoMaiChuLiang5
+,WeiBi,WeiCha,
+
+-  分级基金字段
+
+FJJJLeiXing,ZhengTiYiJia,MShiShiJingZhi,MShangZheXuZhang,MXiaZheXu
+Die,JiaGeGangGan,YinHanShouYi
+
+-  财务数据字段
+
+PinZhongObj,BaoGaoQi,ShangShiRiQi,JingZiChanShouYi
+Lv,MeiGuJingYingXianJin,MeiGuShouYi,MeiGuJingZiChan,MeiGuGongJiJin,MeiGuWeiFenPe
+i,GuDongQuanYiBi,JingLiRunTongBi,ZhuYingShouRuTongBi,XiaoShouMaoLiLv,TiaoZhengMe
+iGuJingZi,ZongZiChan,LiuDongZiChan,GuDingZiChan,WuXingZiChan,LiuDongFuZhai,Chang
+QiFuZhai,ZongFuZhai,GuDongQuanYi,ZiBenGongJiJin,JingYingXianJinLiuLiang,TouZiXia
+nJinLiuLiang,ChouZiXianJinLiuLiang,XianJinZengJiaE,ZhuYingShouRu,ZhuYingLiRun,Yi
+ngYeLiRun,TouZiShouYi,YingYeWaiShouZhi,LiRunZongE,JingLiRun,WeiFenPeiLiRun,JingW
+aiShangShiGu,QiTaLiuTongGu,XianShouGuHeJi,GuoJiaChiGu,GuoYouFaRenGu,JingNeiFaRen
+Gu,JingNeiZiRanRenGu,QiTaFaQiRenGu,MuJiFaRenGu,JingWaiFaRenGu,JingWaiZiRanRenGu,
+YouXianGuHuoQiTa,ZongGuBen,LiuTongAGu,LiuTongBGu,WuXianShouGuHeJi
+
+-  统计信息字段
+
+TJZhangDiePing(响应字段包括:ShangZhangJiaShu,XiaDieJiaShu,PingPanJiaShu,AGuShangZhangJiaShu,AGuXiaDieJiaShu,AGuPingPanJiaShu,BGuShangZhangJiaShu,BGuXiaDieJiaShu,BGuPingPanJiaShu,QiTaShangZhangJiaShu,QiTaXiaDieJiaShu,QiTaPingPanJiaShu),TJChengJiaoE(响应字段包括:AGuChengJiaoE,BGuChengJiaoE,JiJinChengJiaoE,QiTaChengJiaoE)
+
+**结果说明**
+
+```json
+
+{
+    "Id": 27, //大行情消息ID
+    "RepDataStkData": [
+        {
+            "obj": "SH601519",  //交易代码
+            "ZhongWenJianCheng": "大智慧", //中文简称
+            "ZuiXinJia": 81.14, //最新价(元)
+            "KaiPanJia": 83.75, //开盘价(元)
+            "ZuiGaoJia": 83.79, //最高价(元)
+            "ZuiDiJia": 78.8, //最低价(元)
+            "ZuoShou": 81.8,  //昨收(元)
+            "JunJia": 81.79,  //均价(元)
+            "ZhangDie": -0.66,  //涨跌(元)
+            "ZhangFu": -0.81, //涨幅-0.81%
+            "ZhenFu": 6.1,  //振幅6.1%
+            "ChengJiaoLiang": 15216100, //成交量(股)
+            "XianShou": 1700, //现手(股)
+            "ChengJiaoE": 1.244542464e+09,  //成交额(元)
+            "ZongChengJiaoBiShu": 33042,  //总成交笔数
+            "HuanShou": 6.04, //换手6.04%
+            "LiangBi": 0.61,  //量比
+            "NeiPan": 7540900,  //内盘(股)
+            "WaiPan": 7675200,  //外盘(股)
+            "WeiTuoMaiRuJia1": 81.14, //委托买入价1(元)
+            "WeiTuoMaiRuJia2": 81.13, //委托买入价2(元)
+            "WeiTuoMaiRuJia3": 81.12, //委托买入价3(元)
+            "WeiTuoMaiRuJia4": 81.1,  //委托买入价4(元)
+            "WeiTuoMaiRuJia5": 81,  //委托买入价5(元)
+            "WeiTuoMaiRuLiang1": 1300,  //委托买入量1(股)
+            "WeiTuoMaiRuLiang2": 100, //委托买入量2(股)
+            "WeiTuoMaiRuLiang3": 1000,  //委托买入量3(股)
+            "WeiTuoMaiRuLiang4": 600, //委托买入量4(股)
+            "WeiTuoMaiRuLiang5": 34800, //委托买入量5(股)
+            "WeiTuoMaiChuJia1": 81.2, //委托卖出价1(元)
+            "WeiTuoMaiChuJia2": 81.29,  //委托卖出价2(元)
+            "WeiTuoMaiChuJia3": 81.3, //委托卖出价3(元)
+            "WeiTuoMaiChuJia4": 81.48,  //委托卖出价4(元)
+            "WeiTuoMaiChuJia5": 81.49,  //委托卖出价5(元)
+            "WeiTuoMaiChuLiang1": 500,  //委托卖出量1(股)
+            "WeiTuoMaiChuLiang2": 800,  //委托卖出量2(股)
+            "WeiTuoMaiChuLiang3": 600,  //委托卖出量3(股)
+            "WeiTuoMaiChuLiang4": 500,  //委托卖出量4(股)
+            "WeiTuoMaiChuLiang5": 100,  //委托卖出量5(股)
+            "WeiBi": 87.59, //委比87.59%
+            "WeiCha": 353,  //委差(手)
+            "FenZhongZhangFu1": 0.01, //1分钟涨幅(元)
+            "FenZhongZhangFu2": -0.18,  //2分钟涨幅(元)
+            "FenZhongZhangFu3": -0.67,  //3分钟涨幅(元)
+            "FenZhongZhangFu4": -0.32,  //4分钟涨幅(元)
+            "FenZhongZhangFu5": -0.28,  //5分钟涨幅(元)
+            "ZhangTing": 89.98, //涨停价(元)
+            "DieTing": 73.62, //跌停价(元)
+            "ShiJian": 1446532698,  //Unix时间
+            "LeiXing": 1, //类型: (0，指数;1，股票;2，基金;3，债券)
+            "ZiLeiXing": 65,  //子类型(65, A股;66, B股)
+            "LeiXingMingCheng": "创业板",  //类型名称
+            "ChengJiaoLiangDanWei": 100,  //每手股数
+            "PinZhongObj": "SH601519",  //交易代码
+            "BaoGaoQi": "20150930000000", //报告期
+            "ShangShiRiQi": "20091225", //上市日期
+            "MeiGuShouYi": 0.9102,  //每股收益(元)
+            "MeiGuJingZiChan": 3.0864,  //每股净资产(元)
+            "JingZiChanShouYiLv": 29.4899,  //净资产收益率
+            "MeiGuJingYingXianJin": 1.7779, //每股经营现金(元)
+            "MeiGuGongJiJin": 0.6636, //每股公积金(元)
+            "MeiGuWeiFenPei": 1.3733, //每股未分配(元)
+            "GuDongQuanYiBi": 59.0188,  //股东权益比
+            "JingLiRunTongBi": 2179.6632, //净利润同比
+            "ZhuYingShouRuTongBi": 378.8595,  //主营收入同比
+            "XiaoShouMaoLiLv": 84.2389, //销售毛利率
+            "TiaoZhengMeiGuJingZi": 3.0291, //调整每股净资(元)
+            "ZongZiChan": 281137.4462,  //总资产(万元)
+            "LiuDongZiChan": 243946.7482, //流动资产(万元)
+            "GuDingZiChan": 14928.2858, //固定资产(万元)
+            "WuXingZiChan": 2688.5318,  //无形资产(万元)
+            "LiuDongFuZhai": 114239.7458, //流动负债(万元)
+            "ChangQiFuZhai": 973.8254,  //长期负债(万元)
+            "ZongFuZhai": 115213.5712,  //总负债(万元)
+            "GuDongQuanYi": 165923.875, //股东权益(万元)
+            "ZiBenGongJiJin": 35677.5876, //资本公积金(万元)
+            "JingYingXianJinLiuLiang": 95581.4774,  //经营现金流量(万元)
+            "TouZiXianJinLiuLiang": -18257.3101,  //投资现金流量(万元)
+            "ChouZiXianJinLiuLiang": -2150.4, //筹资现金流量(万元)
+            "XianJinZengJiaE": 75176.046, //现金增加额(万元)
+            "ZhuYingShouRu": 76795.1913,  //主营收入(万元)
+            "ZhuYingLiRun": 63036.5085, //主营利润(万元)
+            "YingYeLiRun": 56806.2889,  //营业利润(万元)
+            "TouZiShouYi": 17663.857, //投资收益(万元)
+            "YingYeWaiShouZhi": 1643.1879,  //营业外收支(万元)
+            "LiRunZongE": 58449.4768, //利润总额(万元)
+            "JingLiRun": 48930.8767,  //净利润(万元)
+            "WeiFenPeiLiRun": 73828.984,  //未分配利润(万元)
+            "ZongGuBen": 53760, //总股本(万股)
+            "WuXianShouGuHeJi": 26199.8076, //无限售股合计(万股)
+            "LiuTongAGu": 26199.8076, //流通A股(万股)
+            "LiuTongBGu": 0,  //流通B股(万股)
+            "JingWaiShangShiGu": 0, //境外上市股(万股)
+            "QiTaLiuTongGu": 0, //其他流通股(万股)
+            "XianShouGuHeJi": 27560.1924, //限售股合计(万股)
+            "GuoJiaChiGu": 0, //国家持股(万股)
+            "GuoYouFaRenGu": 0, //国有法人股(万股)
+            "JingNeiFaRenGu": 4268.1924,  //境内法人股(万股)
+            "JingNeiZiRanRenGu": 0, //境内自然人股(万股)
+            "QiTaFaQiRenGu": null,  //其他法人股(万股)
+            "MuJiFaRenGu": 0, //募集法人股(万股)
+            "JingWaiFaRenGu": 0,  //境外自然人股(万股)
+            "JingWaiZiRanRenGu": 0, //优先股或其他(万股)
+            "YouXianGuHuoQiTa": 0, //优先股或其他(万股)
+            "ShangZhangJiaShu": 813,  //上涨家数
+            "XiaDieJiaShu": 1028, //下跌家数
+            "PingPanJiaShu": 284, //平盘家数
+            "AGuShangZhangJiaShu": 605, //A股上涨家数
+            "AGuXiaDieJiaShu": 643, //A股下跌家数
+            "AGuPingPanJiaShu": 251,  //A股平盘家数
+            "AGuChengJiaoE": 328513250740,  //A股成交额(元)
+            "BGuShangZhangJiaShu": 0, //B股上涨家数
+            "BGuXiaDieJiaShu": 0, //B股下跌家数
+            "BGuPingPanJiaShu": 0,  //B股平盘家数
+            "BGuChengJiaoE": 0, //B股成交额(元)
+            "JiJinShangZhangJiaShu": 0, //基金上涨家数
+            "JiJinXiaDieJiaShu": 0, //基金下跌家数
+            "JiJinPingPanJiaShu": 0,  //基金平盘家数
+            "JiJinChengJiaoE": 0, //基金成交额(元)
+            "QiTaShangZhangJiaShu": 208,  //其它上涨家数
+            "QiTaXiaDieJiaShu": 385,  //其它下跌家数
+            "QiTaPingPanJiaShu": 33,  //其它平盘家数
+            "QiTaChengJiaoE": 16723708576830  //其它成交额(元)
+        }
+    ]
+}
+```
+
+**示例**
+
+-  查找股票代码为SH601519的个股信息
+
+[/stkdata?obj=SH601519&field=ZhongWenJianCheng,LeiXing,ZiLeiXing](http://10.15.144.101/stkdata?obj=SH601519&field=ZhongWenJianCheng,LeiXing,ZiLeiXing)
+
+### 键盘宝服务
+
+**URL**
+
+kbspirit
+
+**描述**
+
+键盘宝服务
+
+**参数说明**
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|input\*|字符串|搜索关键字.可以是股票代码/中文简称/拼音首字母|无|
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+|count|字符串|搜索目标的个数，大于0的整数,当搜索到count个符合条件的数据后就不再搜索|默认值为20|
+|type|字符串|类型,可选项包括:0(证券),1(指标),2(主题);可以多选，以逗号分隔，如 “0,1,2”.|默认为“0,1”|
+|market|字符串|市场代码,只有type为0(证券)时有效,可选项包括:SH(上海市场),SZ(深圳市场);可多选，以逗号分隔如SH,SZ;\*代表全市场|默认为SH,SZ|
+|kuozhan|字符串|扩展信息,可选项包括:0(不包含),1(包含)|默认为0(不包含)|
+
+**结果说明**
+
+```json
+
+{
+    "Id": 29,   ////键盘宝消息ID
+    "RepDataJianPanBaoShuChu": [
+        {
+            "GuanJianZi": "d",  //搜索关键字,同input
+            "JieGuo": [
+                {
+                    "LeiXing": 0,   //类型:证券
+                    "ShuJu": [
+                        {
+                            "DaiMa": "SH600000",    //股票代码
+                            "ShuXing": "上证A股"   //股票属性
+                        }
+                    ]
+                },
+                {
+                    "LeiXing": 1,   //类型:指标
+                    "ShuJu": [
+                        {
+                            "DaiMa": "UPDOWN_R",    //指标代码
+                            "MingCheng": " 阴阳相关"    //指标名称
+                        }
+                    ]
+                },
+                {
+                    "LeiXing": 2,   //类型:主题
+                    "ShuJu": [
+                        {
+                            "DaiMa": "1319",    //主题Id
+                            "MingCheng": "体感3D",    //主题名称
+                            "KuoZhan": "SZ002410\nSH600363\nSZ000050\nSZ000973" //主题包含的成分股
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+**示例**
+
+- 搜索证券、指标以及主题范围内的包含字符d的关键字信息，搜索的最大数目为2000，搜索信息包含扩展信息
+
+[/kbspirit?input=d&kuozhan=1&count=2000&type=0,1,2](http://10.15.144.101/kbspirit?input=d&kuozhan=1&count=2000&type=0,1,2)
+
+### 排序服务
+
+**URL**
+
+sort/range
+
+**描述**
+
+排序服务
+
+**参数说明**
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|field\*|字符串|排序字段,\*表示必填,可选项见表后说明,排序字段只能从field可选项中任选其一|无|
+|obj\*|字符串|查询股票代码并排序，\*表示必填，与gql,market不能共存,可以取多只股票，中间用逗号隔开。如SH600000,SH601519|无|
+|market\*|字符串|查询市场代码并排序,\*表示必填，与obj,gql不能共存,可选项包括:SH(上海市场),SZ(深圳市场);可多选，以逗号分隔如SH,SZ|无|
+|gql\*|字符串|查询所有板块成分股并排序\*表示必填，与obj,market不能共存|无|
+|output|字符串|数据结果的返回格式:json(json格式),pb(protobuf格式)|json(json格式)|
+|start|字符串|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选.例如0、1和空都表示第1行开始，-1表示最后一行开始，7表示从第7行开始|该参数省略或0表示不进行行筛选|
+|count|字符串|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据(包括start)|该参数省略或者0或者空表示start位置之后的所有行|
+|desc|字符串|排序方式, 可选项包括:false(升序),true(降序)|默认为false(升序)|
+
+*field* 可选项包括: ZuiXinJia(最新价),KaiPanJia(开盘价),ZuiGaoJia(最高价),ZuiDiJia(最低价),ZuoShou(昨收价),ZongChengJiaoBiShu(总成交笔数),ChengJiaoE(成交额),MeiBiChengJiaoGuShu(每笔成交股数),HuanShou(换手率),LiangBi(量比),NeiPan(内盘),WaiPan(外盘),ZongMaiRu(总买入),ZongMaiChu(总卖出),ZongMaiRuJunJia(总买入均价),ZongMaiChuJunJia(总卖出均价),JunJia(均价),ZhangDie(涨跌),ZhangFu(涨幅),ZhenFu(振幅),ChengJiaoLiang(成交量),XianShou(现手),ZhongWenJianCheng(中文简称),LeiXing(类型),ZiLeiXing(子类型),LeiXingMingCheng(类型名称),ChengJiaoLiangDanWei(成交量单位),ShiYingLv(市盈率),ShiJingLv(市净率),ZongShiZhi(总市值),LiuTongShiZhi(流通市值),WeiBi(委比),WeiCha(委差),FenZhongZhangFu1(1分钟涨幅),FenZhongZhangFu5(5分钟涨幅),WeiTuoMaiRuJia1(委托买入价1),WeiTuoMaiChuJia1(委托卖出价1)
+
+**结果说明**
+
+```json
+
+{
+    "Id": 28,   //排序消息ID
+    "RepDataPaiXu": [
+        {
+            "Obj": "SH601519",  //股票代码
+            "Value": 14.02  //排序字段值
+        },
+        {
+            "Obj": "SH600000",
+            "Value": 16.27
+        }
+    ]
+}
+```
+
+**示例**
+
+-  对SH600000,SH601519股票按照最新价降序排列
+
+[/sort/range?obj=SH600000,SH601519&field=ZuiXinJia&desc=true](http://10.15.144.101/sort/range?obj=SH600000,SH601519&field=ZuiXinJia&desc=true)
+
+-  对上海和深圳市场的所有交易代码按照最新价升序排序
+
+[/sort/range?market=SH,SZ&field=ZuiXinJia&desc=false](http://10.15.144.101/sort/range?market=SH,SZ&field=ZuiXinJia&desc=false)
 
 ## 消息服务
 
@@ -586,7 +988,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 
 
 **结果说明**
@@ -655,7 +1057,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -715,7 +1117,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -769,7 +1171,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -820,7 +1222,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -878,7 +1280,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -929,7 +1331,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -978,7 +1380,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -1047,7 +1449,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -1098,7 +1500,7 @@ qoute/dyna
 |名称|类型|说明|缺省|
 | -------- | -------- | -------- | -------- |
 |obj\*|字符串|查询股票\*表示必填，必填的字段说明放在前面。如SH600000|无|
-|field|字符串|字段以都好间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
+|field|字符串|字段以逗号间隔，为空则返回结构所有字段,关注字段以逗号分隔(见返回说明)|无|
 |start|整型|行筛选，表示从以上步骤产生的数据的第几行开始往后筛选|无|
 |count|整型|行筛选，大于等于0的整数，表示从start的位置往后筛选多少行数据（包括start），0或者空表示之后的所有行|无|
 
@@ -1429,3 +1831,156 @@ forecasts/ggyjyc
 [/forecasts/ggtzyb?obj=SH600000](http://10.15.144.101/forecasts/ggtzyb?obj=SH600000)
 获取SH600000投资研报信息
 
+
+## 板块服务
+
+### 板块查询
+
+**URL**
+
+/block/prop
+
+**描述**
+
+提供板块的查询服务
+
+**参数说明**
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|find\*|字符串|查询的板块关键字\*表示必填|无|
+
+**结果说明**
+
+```json
+{
+	Id: 34,
+	RepDataBlockPropOutput: [
+		{
+			name: [							//返回的带有查询关键字段的市场全路径
+				"股票\\市场分类\\全部A股(非银行)",
+				"股票\\市场分类\\全部A股(不含暂停上市)",
+				"股票\\市场分类\\全部A股(非银行石油石化)",
+				"股票\\市场分类\\深证上市公司(同含AB以A股表示)",
+				"股票\\市场分类\\深证A股",
+				"股票\\市场分类\\含B股的A股",
+				"股票\\市场分类\\深证主板A股",
+				"股票\\市场分类\\上证上市公司(同含AB以A股表示)",
+				"股票\\市场分类\\全部A股",
+				"股票\\市场分类\\主板A股",
+				"股票\\市场分类\\上证A股",
+				"股票\\市场分类\\含H股的A股",
+				"股票\\市场分类\\全部上市公司(同含AB以A股表示)",
+				"股票\\市场分类\\全部A股(非金融)",
+				"股票\\指数成份股\\沪市指数\\上证综合指数\\A股指数",
+				"股票\\指数成份股\\中证指数\\中证主题指数\\A股资源",
+				"股票\\市场分类\\暂停上市A股"
+			]
+		}
+	]
+}
+```
+
+**示例**
+
+[/block/prop?find=A股](http://10.15.144.101/block/prop?find=A股)
+获取带有‘A股’关键字段的所有板块全路径
+
+
+### 板块成分股查询
+
+**URL**
+
+/block/obj
+
+**描述**
+
+提供板块成分股的查询服务
+
+**参数说明**
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|gql\*|字符串|gql为板块查询的语法，`block`,`and`,`or`,`()`均为关键字，block=xxxx 为一条完整的block模块，多个block模块可以使用`or`,`and`做与或操作，`()`表示优先级. 例如: **gql=block=股票\\\\市场分类\\\\上证A股** ; 也可以是  **gql=block=股票\\\\市场分类\\\\上证A股 or ( block=股票\\主题投资\\上海自贸区 and block = 股票\\\\市场分类\\\\上证B股 )** \*表示必填|无|
+
+**结果说明**
+
+```json
+{
+	Id: 33,
+	RepDataBlockObjOutput: [
+		{
+			obj: [			//返回该gql查询到的符合条件的成分股代码
+				"SH600000",
+				"SH600018",
+				"SH600284",
+				"SH600630",
+				"SH600639",
+				"SH600648",
+				"SH600650",
+				"SH600822",
+				"SH600836",
+				"SH603128",
+				"SZ002183"
+			]
+		}
+	]
+}
+```
+
+**示例**
+
+[/block/obj?gql=block=股票\\\\主题投资\\\\上海自贸区](http://10.15.144.101/block/obj?gql=block=股票\\\\主题投资\\\\上海自贸区)
+获取板块"股票\\\\主题投资\\\\上海自贸区"下的所有成分股
+
+### /user/getprop
+用户信息获取服务
+
+**URL**
+
+user/getprop
+
+**参数说明**
+
+\*表示必填
+
+|名称|类型|说明|缺省|
+| -------- | -------- | -------- | -------- |
+|userid\*|字符串|用户ID|无|
+|accounttype\*|字符串|账户类型，account或deviceid|无|
+|field|字符串|用户数据字段，不填则获取全部用户数据，查询多个时用","分割|无|
+
+**结果说明**
+
+若查询字段错误或结果未找到都会查询失败报错
+以下是查询成功的结果
+
+```json
+{
+    "Qid": "",
+    "Err": 0,
+    "Counter": 1,
+    "Data": {
+        "Id": 69,
+        "RepDataUserGetPropResponse": [
+            {
+                "userid": "18831501987",
+                "accounttype": "account",
+                "timestamp": 370189980757,//时间戳，用户更新时间
+                "attrs": [
+                    {
+                        "key": "level",//用户星级
+                        "value": "3"//3星用户
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+**示例**
+
+以下URL用以获得ID为18831501987、账户类型为account的用户的星级信息
+
+[/user/getprop?userid=18831501987&accounttype=account&field=level](http://10.15.144.101/user/getprop?userid=18831501987&accounttype=account&field=level)
