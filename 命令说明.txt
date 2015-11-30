@@ -1,7 +1,0 @@
---生成html
-pandoc public.md -t html5 -o public.html --toc --smart --template=template
---生成pdf
-pandoc public.md -o public.pdf --toc --smart --template=template --latex-engine=xelatex
-
---替换html表格样式
-sed -i 's/<table>/<table class="table table-bordered table-condensed">/' all.html
