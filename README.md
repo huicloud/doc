@@ -7,7 +7,7 @@
 - [简介PPT](http://huicloud.github.io)
 - [API 文档下载](https://www.gitbook.com/book/elsejj/dzhyun/details)
 - [移动SDK](https://github.com/huicloud/mobile)
-- HTML5 SDK (Working...)
+- [HTML5 SDK](https://github.com/huicloud/web-template)
 - PC SDK (Working...)
 
 
