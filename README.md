@@ -5,10 +5,10 @@
 
 - [大智慧云平台官网](http://yun.gw.com.cn/)
 - [简介PPT](http://huicloud.github.io)
-- [API 文档下载](https://www.gitbook.com/book/elsejj/dzhyun/details)
+- [API 文档下载](https://www.gitbook.com/book/huicloud/api/details)
 - [移动SDK](https://github.com/huicloud/mobile)
 - [HTML5 SDK](https://github.com/huicloud/web-template)
-- PC SDK (Working...)
+- [PC SDK](https://github.com/huicloud/pc)
 
 
 
