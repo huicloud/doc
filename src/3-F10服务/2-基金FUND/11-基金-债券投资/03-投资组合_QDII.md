@@ -47,5 +47,5 @@
 
 **示例**
 
-[http://10.15.144.101/f10/fund/zqtz/tzzh_qdii?obj=SZ161714]
+[/f10/fund/zqtz/tzzh_qdii?obj=SZ161714]($APIHOST$/f10/fund/zqtz/tzzh_qdii?obj=SZ161714)
 获取SZ161714的债券投资_投资组合_QDII 

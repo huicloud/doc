@@ -48,5 +48,5 @@
 
 **示例**
 
-[http://10.15.144.101/f10/fund/hytz_qdii?obj=SZ160125]
+[/f10/fund/hytz_qdii?obj=SZ160125]($APIHOST$/f10/fund/hytz_qdii?obj=SZ160125)
 获取SZ160125的行业投资_QDII   

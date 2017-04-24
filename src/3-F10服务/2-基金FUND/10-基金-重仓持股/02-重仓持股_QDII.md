@@ -48,5 +48,5 @@
 
 **示例**
 
-[http://10.15.144.101/f10/fund/zccg_qdii?obj=OF050025]
+[/f10/fund/zccg_qdii?obj=OF050025]($APIHOST$/f10/fund/zccg_qdii?obj=OF050025)
 获取OF050025的重仓持股_QDII  

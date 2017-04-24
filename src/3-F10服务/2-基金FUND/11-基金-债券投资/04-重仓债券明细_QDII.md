@@ -48,5 +48,5 @@
 
 **示例**
 
-[http://10.15.144.101/f10/fund/zqtz/zcmx_qdii?obj=OF000340]
+[/f10/fund/zqtz/zcmx_qdii?obj=OF000340]($APIHOST$/f10/fund/zqtz/zcmx_qdii?obj=OF000340)
 获取OF000340的债券投资_重仓债券明细_QDII 

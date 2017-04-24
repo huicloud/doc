@@ -48,5 +48,5 @@
 
 **示例**
 
-[http://10.15.144.101/f10/fund/gpmx/qbcg_qdii?obj=OF000041&count=1]
+[/f10/fund/gpmx/qbcg_qdii?obj=OF000041&count=1]($APIHOST$/f10/fund/gpmx/qbcg_qdii?obj=OF000041&count=1)
 获取OF000041的股票明细_全部持股_QDII的首条数据

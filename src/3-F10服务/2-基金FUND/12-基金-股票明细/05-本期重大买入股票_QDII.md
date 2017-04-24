@@ -47,5 +47,5 @@
 
 **示例**
 
-[http://10.15.144.101/f10/fund/gpmx/bqzdmrgp_qdii?obj=OF000041]
+[/f10/fund/gpmx/bqzdmrgp_qdii?obj=OF000041]($APIHOST$/f10/fund/gpmx/bqzdmrgp_qdii?obj=OF000041)
 获取OF000041的股票明细_本期重大买入股票_QDII  
